@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+// Today chat Models
+model Post {
+  id           Int      @id @default(autoincrement())
+  title        String
+  content      String
+  authorId     Int
+  published_at DateTime @default(now())
+
+  @@index([authorId])
+}
+
+model Token {
+  id                 Int    @id @default(autoincrement())
+  associated_user_id Int    @unique
+  jwt_token          String @unique @db.VarChar(500)
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique
+  password     String
+  email        String   @unique
+  first_name   String?
+  last_initial String?
+  bio          String?
+  member_since DateTime @default(now())
+}
+
+// ToDo Models
+model ToDoUser {
+  id           Int    @id @default(autoincrement())
+  username     String @unique
+  password     String
+  email        String @unique
+  member_since DateTime @default(now())
+}
+
+model ToDoToken {
+  id Int                 @id @default(autoincrement())
+  jwt_token String       @unique @db.VarChar(500)
+  associated_user_id Int @unique
+}

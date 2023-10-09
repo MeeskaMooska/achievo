@@ -1,0 +1,82 @@
+/*
+Color palette - light mode:
+  #00CF48 - green
+  #FF0808 - red
+  #FFFFFF - white
+  #000000 - black
+*/
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Header styling */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #3498db; /* Adjust color as needed */
+  color: #fff; /* Adjust color as needed */
+}
+
+/* Title styling */
+.header-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Links on the right side */
+.header-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.header-right a {
+  margin-left: 20px; /* Adjust spacing between links */
+  text-decoration: none;
+  color: #fff; /* Adjust color as needed */
+  cursor: pointer;
+}
+
+.header-right a:hover {
+  text-decoration: underline;
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+input {
+  width: 100%;
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid grey;
+}
+
+input:focus {
+  outline: none;
+}
+
+.link-button {
+  padding: 20px;
+  border: 2px solid blue;
+  text-decoration: none;
+  transition: 1s;
+}
+
+.link-button:hover {
+  background: blue;
+  color: white;
+}
+
+a:visited {
+  color: inherit;
+}

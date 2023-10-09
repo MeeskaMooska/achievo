@@ -1,0 +1,19 @@
+{
+	"geolocation": {
+		"data": {
+			"city": "Warrenton",
+			"country": {
+				"code": "US",
+				"name": "United States"
+			},
+			"subdivision": {
+				"code": "VA",
+				"name": "Virginia"
+			},
+			"timezone": "America/New_York",
+			"latitude": 38.6877,
+			"longitude": -77.8369
+		},
+		"timestamp": 1696866667661
+	}
+}
