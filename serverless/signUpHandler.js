@@ -113,14 +113,14 @@ exports.handler = async (event) => {
       });
 
       // Generate JWT token
-      // TODO: change jwt token expiration time
+      // Default expiration is two weeks
       const session_token = await jwt.sign(
         {
           username: newUser.username,
           email: newUser.email
         },
         jwtSecret,
-        { expiresIn: '1m' }
+        { expiresIn: '14d' }
       );
 
       // Create cookie

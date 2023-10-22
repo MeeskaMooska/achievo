@@ -67,7 +67,7 @@ exports.handler = async (event) => {
                 email: user.email,
             },
             jwtSecret,
-            { expiresIn: '1m' }
+            { expiresIn: '14d' }
         );
 
         // Create cookie

@@ -1,0 +1,16 @@
+.centerColumn {
+
+    width: 80%;
+    flex: 1;
+    overflow: auto;
+    background: red;
+}
+
+.todoContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    
+}

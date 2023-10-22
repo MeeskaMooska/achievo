@@ -1,34 +1,41 @@
 const { PrismaClient } = require('@prisma/client');
 const { hashPassword } = require('./passwordHasher');
 const jwt = require('jsonwebtoken');
+const cookie = require('cookie');
 const prisma = new PrismaClient();
 const jwtSecret = process.env.JWT_SECRET;
 
 // Start of the function
 exports.handler = async (event) => {
-    // Attempt to parse json body
-    let body;
-    try {
-        body = JSON.parse(event.body);
-    } catch (parseError) {
-        console.error('Invalid JSON format: ', parseError);
+    const { headers } = event;  // Get the headers
+
+    // Extract the cookie from the headers
+    const cookieHeader = headers.cookie;
+
+    // If there is no cookie, return an error
+    if (!cookieHeader) {
         return {
-            statusCode: 400,
-            body: JSON.stringify({ error: 'JSON Error.', parseError}),
+            statusCode: 401,
+            body: JSON.stringify({ error: 'No cookie.' }),
         };
     }
 
-    const token = body.token;
+    // Parse the cookie header to get the value of the HTTP-only cookie
+    const userSessionToken = cookie.parse(cookieHeader)['user_session_token'];
 
-    // Verify token
-    jwt.verify(token, jwtSecret, async (err, decoded) => {
-        if (err) {
-            console.error('Invalid token: ', err);
-            return {
-                statusCode: 401,
-                body: JSON.stringify({ error: 'Invalid token.', err }),
-            };
-        }
+    try {
+        // Verify token
+        const decoded = jwt.verify(userSessionToken, jwtSecret);
         console.log('decoded: ', decoded);
-    });
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ message: 'Token verified.' }),
+        };
+    } catch (err) {
+        return {
+            statusCode: 401,
+            body: JSON.stringify({ error: 'Invalid token.', err }),
+        };
+    }
 };
