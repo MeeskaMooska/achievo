@@ -8,14 +8,14 @@ export default function App() {
 
     useEffect(() => {
         console.log('test')
-            axios.get('/.netlify/functions/verifyToken', { withCredentials: true })
+            axios.get('../.netlify/functions/verifyToken', { withCredentials: true })
                 .then((response) => {
                     // Valid token - redirect to dashboard or perform actions
                     console.log('Response from server:', response);
                 })
                 .catch((error) => {
                     // Not a valid token - handle the error
-                    console.log('Error from server:', error);
+                    console.error('Error from server:', error.response.data);
                 });
 
         // Call the function when the component loads
