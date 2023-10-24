@@ -48,7 +48,7 @@ exports.handler = async (event) => {
   // ---Checking for user existence---
   // Returns true if username exists
   const usernameExists = async (username) => {
-    const user = await prisma.toDoUser.findUnique({
+    const user = await prisma.achievoUser.findUnique({
       where: {
         username: username,
       },
@@ -58,7 +58,7 @@ exports.handler = async (event) => {
 
   // Returns true if email exists
   const emailExists = async (email) => {
-    const user = await prisma.toDoUser.findUnique({
+    const user = await prisma.achievoUser.findUnique({
       where: {
         email: email,
       },
@@ -104,7 +104,7 @@ exports.handler = async (event) => {
   try {
     hashedPassword = await hashPassword(password);
     try {
-      const newUser = await prisma.toDoUser.create({
+      const newUser = await prisma.achievoUser.create({
         data: {
           username,
           password: hashedPassword,

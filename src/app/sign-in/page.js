@@ -24,7 +24,7 @@ export default function App() {
         };
 
         try {
-            const response = await fetch ('../../.netlify/functions/signUserIn', {
+            const response = await fetch ('../../.netlify/functions/signInHandler', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

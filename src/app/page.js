@@ -1,9 +1,7 @@
 'use client'
 
-import axios from 'axios';
 import './globals.css'
 import styles from './page.module.css'
-import Cookies from 'js-cookie'
 
 export default function App() {
   const handleGetStarted = async () => {

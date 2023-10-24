@@ -1,11 +1,49 @@
 .button {
-    background: white;
-    padding: 20px;
-    border: 2px solid blue;
-    transition: 1s;
+  background: white;
+  padding: 20px;
+  border: 2px solid blue;
+  transition: 1s;
 }
 
 .button:hover {
-    background: blue;
-    color: white;
+  background: blue;
+  color: white;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background-color: #3498db;
+  /* Adjust color as needed */
+  color: #fff;
+  /* Adjust color as needed */
+}
+
+/* Title styling */
+.headerTitle {
+  font-size: 28px;
+  font-weight: bold;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Links on the right side */
+.headerLinkContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.headerLinkContainer a {
+  margin-left: 20px;
+  /* Adjust spacing between links */
+  text-decoration: none;
+  color: #fff;
+  /* Adjust color as needed */
+  cursor: pointer;
+}
+
+.headerLinkContainer a:hover {
+  text-decoration: underline;
 }

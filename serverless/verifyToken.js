@@ -1,8 +1,5 @@
-const { PrismaClient } = require('@prisma/client');
-const { hashPassword } = require('./passwordHasher');
 const jwt = require('jsonwebtoken');
 const cookie = require('cookie');
-const prisma = new PrismaClient();
 const jwtSecret = process.env.JWT_SECRET;
 
 // Start of the function
@@ -26,11 +23,10 @@ exports.handler = async (event) => {
     try {
         // Verify token
         const decoded = jwt.verify(userSessionToken, jwtSecret);
-        console.log('decoded: ', decoded);
-
+        
         return {
             statusCode: 200,
-            body: JSON.stringify({ message: 'Token verified.' }),
+            body: JSON.stringify({ message: 'Token verified.', username: decoded.username }),
         };
     } catch (err) {
         return {

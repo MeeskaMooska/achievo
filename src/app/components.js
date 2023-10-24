@@ -6,5 +6,17 @@ const Button = ({text}) => {
     )
 }
 
+const Header = () => {
+    return (
+        <header className={styles.header}>
+            <h1 className={styles.headerTitle}>Achievo</h1>
+            <div className={styles.headerLinkContainer}>
+              <a href='dashboard'>Dashboard</a>
+              <a href='sign-in'>Sign In</a>
+              <a href='sign-up'>Register</a>
+            </div>
+          </header>
+    )
+}
 
-export default Button;
+export {Button, Header};

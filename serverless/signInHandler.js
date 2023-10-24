@@ -21,7 +21,7 @@ exports.handler = async (event) => {
     const sign_in_method = account_identifier.includes('@') ? 'email' : 'username';
 
     try {
-        const user = await prisma.toDoUser.findUnique({
+        const user = await prisma.achievoUser.findUnique({
             where: {
                 [sign_in_method]: account_identifier,
             },
@@ -45,7 +45,7 @@ exports.handler = async (event) => {
         }
 
         // check for existing token
-        const existingToken = await prisma.toDoToken.findFirst({
+        const existingToken = await prisma.achievoToken.findFirst({
             where: {
               associated_user_id: user.id,
             },
@@ -53,7 +53,7 @@ exports.handler = async (event) => {
           
         // delete existing token
         if (existingToken) {
-            await prisma.toDoToken.delete({
+            await prisma.achievoToken.delete({
               where: {
                 id: existingToken.id,
               },

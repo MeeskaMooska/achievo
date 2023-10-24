@@ -30,7 +30,7 @@ export default function App() {
         };
     
         try {
-            const response = await fetch ('../../.netlify/functions/createUser', {
+            const response = await fetch ('../../.netlify/functions/signUpHandler', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
