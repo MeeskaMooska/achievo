@@ -1,9 +1,19 @@
 .listItemDiv {
-    background: blue;
+    border-bottom: 1px solid grey;
+    transition: .5s;
 }
 
 .sectionDiv {
     width: 100%;
     display: flex;
     flex-direction: row;
+}
+
+.newItemButton {
+    justify-content: space-around;
+    cursor: pointer;
+}
+
+.newItemButton:hover {
+    background: rgb(244, 244, 244);
 }
