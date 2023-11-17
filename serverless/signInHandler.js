@@ -26,7 +26,7 @@ exports.handler = async (event) => {
                 [sign_in_method]: account_identifier,
             },
         });
-    
+
         if (!user) {
             return {
                 statusCode: 401,
@@ -47,18 +47,9 @@ exports.handler = async (event) => {
         // check for existing token
         const existingToken = await prisma.achievoToken.findFirst({
             where: {
-              associated_user_id: user.id,
+                associated_user_id: user.id,
             },
         });
-          
-        // delete existing token
-        if (existingToken) {
-            await prisma.achievoToken.delete({
-              where: {
-                id: existingToken.id,
-              },
-            });
-        }
 
         // Create JWT for the user session
         const session_token = jwt.sign(
@@ -69,6 +60,26 @@ exports.handler = async (event) => {
             jwtSecret,
             { expiresIn: '14d' }
         );
+
+        // Check if token exists
+        if (existingToken) {
+            await prisma.achievoToken.update({
+                where: {
+                    id: existingToken.id,
+                },
+                data: {
+                    jwt_token: session_token,
+                },
+            });
+        } else {
+            // Create token in database
+            await prisma.achievoToken.create({
+                data: {
+                    associated_user_id: user.id,
+                    jwt_token: session_token,
+                },
+            });
+        }
 
         // Create cookie
         const user_session_cookie = `user_session_token=${session_token}; HttpOnly; Secure; SameSite=Strict; Path=/;`;

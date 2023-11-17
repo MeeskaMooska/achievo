@@ -33,139 +33,155 @@ const { emailAuthCreator } = require('./emailAuthCreator');
 
 exports.handler = async (event) => {
 
-  // Attempt to parse json body
-  let body;
-  try {
-    body = JSON.parse(event.body);
-  } catch (parseError) {
-    console.error('Invalid JSON format: ', parseError);
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ error: 'JSON Error.', parseError }),
-    };
-  }
+	// Attempt to parse json body
+	let body;
+	try {
+		body = JSON.parse(event.body);
+	} catch (parseError) {
+		console.error('Invalid JSON format: ', parseError);
+		return {
+			statusCode: 400,
+			body: JSON.stringify({ error: 'JSON Error.', parseError }),
+		};
+	}
 
-  const { username, password, email } = body;
+	const { username, password, email } = body;
 
-  // ---Checking for user existence---
-  // Returns true if username exists
-  const usernameExists = async (username) => {
-    const user = await prisma.achievoUser.findUnique({
-      where: {
-        username: username,
-      },
-    });
-    return !!user; // Returns true if username exists
-  };
+	// ---Checking for user existence---
+	// Returns true if username exists
+	const usernameExists = async (username) => {
+		const user = await prisma.achievoUser.findUnique({
+			where: {
+				username: username,
+			},
+		});
+		return !!user; // Returns true if username exists
+	};
 
-  // Returns true if email exists
-  const emailExists = async (email) => {
-    const user = await prisma.achievoUser.findUnique({
-      where: {
-        email: email,
-      },
-    });
-    return !!user; // Returns true if email exists
-  }
+	// Returns true if email exists
+	const emailExists = async (email) => {
+		const user = await prisma.achievoUser.findUnique({
+			where: {
+				email: email,
+			},
+		});
+		return !!user; // Returns true if email exists
+	}
 
-  try {
-    // Duplicate username found
-    if (await usernameExists(username)) {
-      return {
-        statusCode: 409,
-        body: JSON.stringify({ error: 'Username already in use.' }),
-      }
-    }
+	try {
+		// Duplicate username found
+		if (await usernameExists(username)) {
+			return {
+				statusCode: 409,
+				body: JSON.stringify({ error: 'Username already in use.' }),
+			}
+		}
 
-    // Duplicate email found
-    if (await emailExists(email)) {
-      return {
-        statusCode: 409,
-        body: JSON.stringify({ error: 'Email already in use' }),
-      }
-    }
-  } catch (databaseQueryError) {
-    console.error('Error during database query.', databaseQueryError);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ databaseQueryError: 'Error during database query.', databaseQueryError }),
-    };
-  }
+		// Duplicate email found
+		if (await emailExists(email)) {
+			return {
+				statusCode: 409,
+				body: JSON.stringify({ error: 'Email already in use' }),
+			}
+		}
+	} catch (databaseQueryError) {
+		console.error('Error during database query.', databaseQueryError);
+		return {
+			statusCode: 500,
+			body: JSON.stringify({ databaseQueryError: 'Error during database query.', databaseQueryError }),
+		};
+	}
 
-  // ---User doesn't exist---
-  // Checks password strength
-  // Password must be at least 8 characters long, contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*-_])[A-Za-z\d!@#$%^&*-_]{8,}$/;
-  if (!passwordRegex.test(password)) {
-    return {
-      statusCode: 422,
-      body: JSON.stringify({ error: 'Password Error: not strong.' }),
-    };
-  }
+	// ---User doesn't exist---
+	// Checks password strength
+	// Password must be at least 8 characters long, contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character
+	const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*-_])[A-Za-z\d!@#$%^&*-_]{8,}$/;
+	if (!passwordRegex.test(password)) {
+		return {
+			statusCode: 422,
+			body: JSON.stringify({ error: 'Password Error: not strong.' }),
+		};
+	}
 
-  try {
-    hashedPassword = await hashPassword(password);
-    try {
-      const newUser = await prisma.achievoUser.create({
-        data: {
-          username,
-          password: hashedPassword,
-          email,
-        },
-      });
+	try {
+		const hashedPassword = await hashPassword(password);
+		try {
+			const newUser = await prisma.achievoUser.create({
+				data: {
+					username,
+					password: hashedPassword,
+					email,
+				},
+			});
 
-      // Generate JWT token
-      // Default expiration is two weeks
-      const session_token = await jwt.sign(
-        {
-          username: newUser.username,
-          email: newUser.email
-        },
-        jwtSecret,
-        { expiresIn: '14d' }
-      );
+			// Generate JWT token
+			// Default expiration is two weeks
+			const session_token = jwt.sign(
+				{
+					username: newUser.username,
+					email: newUser.email
+				},
+				jwtSecret,
+				{ expiresIn: '14d' }
+			);
 
-      // Create cookie
-      const user_session_cookie = `user_session_token=${session_token}; HttpOnly; Secure; SameSite=Strict; Path=/;`;
+			// Create token in database
+			try {
+				await prisma.achievoToken.create({
+					data: {
+						associated_user_id: newUser.id,
+						jwt_token: session_token,
+					},
+				});
+			} catch (createTokenError) {
+				console.error(createTokenError)
+				return {
+					statusCode: 500,
+					body: JSON.stringify({ message: 'Error creating token.', error: createTokenError }),
+				};
+			}
 
-      // Send email to user to verify email address
-      try {
-        emailVerificationExtension = await emailAuthCreator(username, email)
-        await prisma.achievoEmailExtension.create({
-          data: {
-            extension: emailVerificationExtension,
-            email,
-            user_id: newUser.id,
-          },
-        });
-      } catch (emailAuthError) {
-        console.error(emailAuthError)
-        return {
-          statusCode: 500,
-          body: JSON.stringify({ message: 'Error sending email verification.', error: emailAuthError }),
-        };
-      }
+			// Create cookie
+			const user_session_cookie = `user_session_token=${session_token}; HttpOnly; Secure; SameSite=Strict; Path=/;`;
+
+			// Send email to user to verify email address
+			try {
+				emailVerificationExtension = await emailAuthCreator(username, email)
+				await prisma.achievoEmailExtension.create({
+					data: {
+						extension: emailVerificationExtension,
+						email,
+						user_id: newUser.id,
+					},
+				});
+			} catch (emailAuthError) {
+				console.error(emailAuthError)
+				return {
+					statusCode: 500,
+					body: JSON.stringify({ message: 'Error sending email verification.', error: emailAuthError }),
+				};
+			}
 
 
-      // User account was successfully created
-      return {
-        statusCode: 201,
-        headers: {
-          'Set-Cookie': user_session_cookie,
-        },
-        body: JSON.stringify({ message: 'User created successfully | user session token set as cookie.' }),
-      };
-    } catch (createUserError) {
-      // User account failed to create
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: 'An error occurred while creating the user.', createUserError }),
-      };
-    }
-  } catch (hashError) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'Error hashing password.', hashError }),
-    };
-  }
+			// User account was successfully created
+			return {
+				statusCode: 201,
+				headers: {
+					'Set-Cookie': user_session_cookie,
+				},
+				body: JSON.stringify({ message: 'User created successfully | user session token set as cookie.' }),
+			};
+		} catch (createUserError) {
+			// User account failed to create
+			return {
+				statusCode: 500,
+				body: JSON.stringify({ error: 'An error occurred while creating the user.', createUserError }),
+			};
+		}
+	} catch (hashError) {
+		return {
+			statusCode: 500,
+			body: JSON.stringify({ error: 'Error hashing password.', hashError }),
+		};
+	}
 }
