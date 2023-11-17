@@ -56,6 +56,7 @@ exports.handler = async (event) => {
             {
                 username: user.username,
                 email: user.email,
+                id: user.id,
             },
             jwtSecret,
             { expiresIn: '14d' }

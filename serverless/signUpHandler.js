@@ -119,7 +119,8 @@ exports.handler = async (event) => {
 			const session_token = jwt.sign(
 				{
 					username: newUser.username,
-					email: newUser.email
+					email: newUser.email,
+					id: newUser.id,
 				},
 				jwtSecret,
 				{ expiresIn: '14d' }
