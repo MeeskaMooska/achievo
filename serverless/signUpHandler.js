@@ -13,6 +13,7 @@ things this function needs to do:
   3.1 store user token in db -done
   3.2 return user token to client -done
 
+4. call function that will send an email to user to verify email address
 */
 
 /*
@@ -28,9 +29,10 @@ const { hashPassword } = require('./passwordHasher');
 const jwt = require('jsonwebtoken');
 const prisma = new PrismaClient();
 const jwtSecret = process.env.JWT_SECRET;
+const emailAuthCreator = require('./emailAuthCreator');
 
-// Start of the function
 exports.handler = async (event) => {
+
   // Attempt to parse json body
   let body;
   try {
@@ -125,6 +127,17 @@ exports.handler = async (event) => {
 
       // Create cookie
       const user_session_cookie = `user_session_token=${session_token}; HttpOnly; Secure; SameSite=Strict; Path=/;`;
+
+      // Send email to user to verify email address
+      emailVerificationExtension = await emailAuthCreator(username, email)
+      const newExtension = await prisma.achievoEmailExtension.create({
+        data: {
+          extension: emailVerificationExtension,
+          email,
+          user_id: newUser.id,
+        },
+      });
+
 
       // User account was successfully created
       return {

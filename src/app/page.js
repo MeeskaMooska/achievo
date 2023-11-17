@@ -10,10 +10,9 @@ export default function App() {
   return (
     <div className="centered">
       <div className={styles.home_content}>
-        <h1>To Do</h1>
-        <h2>Your Tasks, Our Priority: Simplify Your Day with To Do.</h2>
-        <p style={{ marginBottom: 45 }}>An application by <a href="https://tayven-stover.com">Tayven Stover</a>.</p>
-        <a className="link-button" onClick={handleGetStarted}>Get started with To Do.</a>
+        <h1>Achievo</h1>
+        <h2>Your Tasks, Our Priority: Simplify Your Day with Achievo.</h2>
+        <a className="link-button" onClick={handleGetStarted}>Get started with Achievo.</a>
       </div>
     </div>
   )

@@ -1,19 +1,139 @@
-.listItemDiv {
-    border-bottom: 1px solid grey;
-    transition: .5s;
-}
-
-.sectionDiv {
-    width: 100%;
+/* Options Container */
+.listOptionsContainer {
     display: flex;
+    justify-content: flex-start;
+    align-items: center;
     flex-direction: row;
+    width: 80%;
+    gap: 10px;
 }
 
-.newItemButton {
-    justify-content: space-around;
+.listOptionsBlock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid lightgrey;
+    box-shadow: 1px 1px 2px grey;
+    border-radius: 4px;
+    transition: .3s;
     cursor: pointer;
 }
 
-.newItemButton:hover {
-    background: rgb(244, 244, 244);
+.listOptionsBlock:hover {
+    box-shadow: 2px 2px 4px grey;
+}
+
+.listOptionsBlock p {
+    margin: 0;
+}
+
+/* List Container */
+.listContainer {
+    border: 1px solid lightgrey;
+    box-shadow: 2px 2px 4px grey;
+    width: 80%;
+    max-height: 80%;
+    border-radius: 4px;
+    overflow: scroll;
+}
+
+.listBlock {
+    padding: 14px;
+    border-bottom: 1px solid black;
+}
+
+.listBlock input {
+    border: none;
+    flex-grow: 1;
+    border-bottom: solid 1px black;
+    transition: .3s linear;
+    outline: none;
+    box-sizing: border-box;
+    padding: 2px;
+}
+
+.listBlock input:focus {
+    border: none;
+    border-bottom: solid 1px skyblue;
+}
+
+.editButton {
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 3px;
+    transition: .3s;
+}
+
+.editButton:hover {
+    background: lightgrey;
+}
+
+/** List Title Block **/
+.listTitleBlock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+}
+
+.listTitleBlock h3 {
+    margin: 0;
+}
+
+.listTitleBlock div {
+    display: flex;
+    flex-grow: 1;
+    gap: 6px;
+}
+
+/** New List Item Block **/
+.newListItemBlock {
+    border-bottom: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    transition: .3s;
+}
+
+.newListItemBlock:hover {
+    background: lightgrey;
+}
+
+.newListItemBlock p {
+    margin: 0;
+}
+
+/** List Item Block **/
+.listItemBlock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+}
+
+.completedToggleButton {
+    width: 15px;
+    height: 15px;
+    border: solid 1px black;
+    border-radius: 50%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    transition: .3s;
+}
+
+.completedToggleButton:hover {
+    border: solid 2px dodgerblue;
+}
+
+.completed {
+    background: dodgerblue;
+    border: none;
+}
+
+.completed:hover {
+    border: solid 2px black;
 }

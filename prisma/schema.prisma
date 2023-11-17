@@ -43,6 +43,7 @@ model AchievoUser {
   password     String
   email        String        @unique
   member_since DateTime      @default(now())
+  email_valid  Boolean       @default(false)
   lists        AchievoList[]
 }
 
@@ -57,22 +58,9 @@ model AchievoList {
   name        String
   description String?
   item        AchievoItem[]
-  section     AchievoSection[]
-  user        AchievoUser    @relation(fields: [user_id], references: [id])
+  user        AchievoUser   @relation(fields: [user_id], references: [id])
   user_id     Int
-
   @@index([user_id])
-}
-
-model AchievoSection {
-  id          Int         @id @default(autoincrement())
-  name        String
-  description String?
-  position    Int
-  list        AchievoList @relation(fields: [list_id], references: [id])
-  list_id     Int
-
-  @@index([list_id])
 }
 
 model AchievoItem {
@@ -82,6 +70,12 @@ model AchievoItem {
   completed   Boolean     @default(false)
   list_id     Int
   list        AchievoList @relation(fields: [list_id], references: [id])
-
   @@index([list_id])
+}
+
+model AchievoEmailExtension {
+  id          Int         @id @default(autoincrement())
+  extension   String      @unique
+  email       String      @unique
+  user_id     Int
 }
