@@ -29,7 +29,7 @@ const { hashPassword } = require('./passwordHasher');
 const jwt = require('jsonwebtoken');
 const prisma = new PrismaClient();
 const jwtSecret = process.env.JWT_SECRET;
-const emailAuthCreator = require('./emailAuthCreator');
+const { emailAuthCreator } = require('./emailAuthCreator');
 
 exports.handler = async (event) => {
 
@@ -129,14 +129,22 @@ exports.handler = async (event) => {
       const user_session_cookie = `user_session_token=${session_token}; HttpOnly; Secure; SameSite=Strict; Path=/;`;
 
       // Send email to user to verify email address
-      emailVerificationExtension = await emailAuthCreator(username, email)
-      const newExtension = await prisma.achievoEmailExtension.create({
-        data: {
-          extension: emailVerificationExtension,
-          email,
-          user_id: newUser.id,
-        },
-      });
+      try {
+        emailVerificationExtension = await emailAuthCreator(username, email)
+        await prisma.achievoEmailExtension.create({
+          data: {
+            extension: emailVerificationExtension,
+            email,
+            user_id: newUser.id,
+          },
+        });
+      } catch (emailAuthError) {
+        console.error(emailAuthError)
+        return {
+          statusCode: 500,
+          body: JSON.stringify({ message: 'Error sending email verification.', error: emailAuthError }),
+        };
+      }
 
 
       // User account was successfully created

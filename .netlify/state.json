@@ -1,19 +1,19 @@
 {
 	"geolocation": {
 		"data": {
-			"city": "New York",
+			"city": "Warrenton",
 			"country": {
 				"code": "US",
 				"name": "United States"
 			},
 			"subdivision": {
-				"code": "NY",
-				"name": "New York"
+				"code": "VA",
+				"name": "Virginia"
 			},
 			"timezone": "America/New_York",
-			"latitude": 40.7123,
-			"longitude": -74.0068
+			"latitude": 38.719,
+			"longitude": -77.7416
 		},
-		"timestamp": 1700186328803
+		"timestamp": 1700235095735
 	}
 }
