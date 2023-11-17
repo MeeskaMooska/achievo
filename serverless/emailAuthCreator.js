@@ -3,7 +3,7 @@ const { env } = require("process");
 
 // Create transporter
 const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: "smtp.forwardemail.net",
     port: 465,
     secure: true,
     auth: {
