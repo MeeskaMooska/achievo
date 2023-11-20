@@ -2,17 +2,17 @@ import styles from './components.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDownload, faFloppyDisk, faPencil, faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
-const ListOptionsContainer = () => {
+const ListOptionsContainer = ({ handleSaveClick }) => {
     return (
         <div className={styles.listOptionsContainer}>
-            <div className={styles.listOptionsBlock}>
+            <button className={styles.listOptionsBlock} onClick={handleSaveClick}>
                 <FontAwesomeIcon icon={faFloppyDisk} />
                 <p>Save</p>
-            </div>
-            <div className={styles.listOptionsBlock}>
+            </button>
+            <button className={styles.listOptionsBlock}>
                 <FontAwesomeIcon icon={faDownload} />
                 <p>Load</p>
-            </div>
+            </button>
         </div>
     )
 }
@@ -25,7 +25,7 @@ const ListContainer = ({ children = null }) => {
     )
 }
 
-const ListTitleBlock = ({ title = '' }) => {
+const ListTitleBlock = ({ title = '', onChange }) => {
     const handleEditButtonPressed = (e) => {
         const inputParent = e.target.previousSibling
         inputParent.lastChild.focus()
@@ -35,7 +35,7 @@ const ListTitleBlock = ({ title = '' }) => {
         <div className={`${styles.listTitleBlock} ${styles.listBlock}`}>
             <div>
                 <h3>Title:</h3>
-                <input type="text" defaultValue={title}></input>
+                <input type="text" defaultValue={title} onChange={onChange}></input>
             </div>
             <FontAwesomeIcon icon={faPencil} className={styles.editButton} onClick={handleEditButtonPressed} />
         </div>
