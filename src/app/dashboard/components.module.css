@@ -1,0 +1,165 @@
+.listsViewer {
+    padding: 20px;
+    width: calc(70% - 40px);
+    height: calc(100% - 40px);
+    float: left;
+    overflow: scroll;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: max-content;
+    gap: 20px;
+    align-items: start;
+}
+
+.listPreviewContainer {
+    width: 30%;
+    height: 100%;
+    float: right;
+    position: relative;
+    background: rgb(244, 244, 244);
+}
+
+
+.listCard {
+    border-radius: 8px;
+    transition: 0.5s;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.75);
+}
+
+.listCard:hover {
+    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.75);
+}
+
+.listCard h3 {
+    margin: 4px;
+}
+
+.listCard p {
+    margin: 4px;
+    white-space: nowrap;
+    box-shadow: inset 10px 0 5px -20px #888;
+}
+
+.listCard p {
+    position: relative;
+    overflow: hidden;
+    /* Ensure text doesn't spill out */
+    line-height: 1.5;
+    /* Example line-height, adjust as needed */
+    padding-right: 20px;
+    /* Give space for shadow */
+}
+
+.listCard p::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 60px;
+    /* Width of the shadow */
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.511), rgba(255, 255, 255));
+    pointer-events: none;
+    /* Allows text selection behind the shadow */
+}
+
+.previewContainer {
+    background: rgb(250, 250, 250);
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.previewBlock {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 60%;
+    gap: 4px;
+}
+
+.previewBlockTitle {
+    border-radius: 2px;
+    background: rgb(236, 236, 236);
+    width: 100%;
+    flex-grow: 1;
+}
+
+.previewBlockItemSection {
+    width: 80%;
+    height: 50%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.loadingContainer {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    float: left;
+}
+
+.loadingCircle {
+    width: 40px;
+    height: 40px;
+    border: 6px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 6px solid rgb(226, 226, 226);
+    animation: spin 1.4s ease-out infinite;
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.plusLineContainer {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    border-radius: 4px;
+}
+
+.plusLine {
+    border-radius: 2px;
+    background: rgb(236, 236, 236);
+    position: absolute;
+}
+
+.plusLineOne {
+    width: 8px;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.plusLineTwo {
+    width: 100%;
+    height: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+}
