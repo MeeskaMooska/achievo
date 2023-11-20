@@ -55,27 +55,28 @@ model AchievoToken {
 
 model AchievoList {
   id          Int           @id @default(autoincrement())
-  name        String
+  title       String
   description String?
-  item        AchievoItem[]
-  user        AchievoUser   @relation(fields: [user_id], references: [id])
-  user_id     Int
-  @@index([user_id])
+  items       AchievoItem[]
+  user        AchievoUser   @relation(fields: [userId], references: [id])
+  userId      Int
+
+  @@index([userId])
 }
 
 model AchievoItem {
-  id          Int         @id @default(autoincrement())
-  section     Int
-  label       String
-  completed   Boolean     @default(false)
-  list_id     Int
-  list        AchievoList @relation(fields: [list_id], references: [id])
-  @@index([list_id])
+  id        Int         @id @default(autoincrement())
+  value     String
+  completed Boolean     @default(false)
+  listId    Int
+  list      AchievoList @relation(fields: [listId], references: [id])
+
+  @@index([listId])
 }
 
 model AchievoEmailExtension {
-  id          Int         @id @default(autoincrement())
-  extension   String      @unique
-  email       String      @unique
-  user_id     Int
+  id        Int    @id @default(autoincrement())
+  extension String @unique
+  email     String @unique
+  user_id   Int
 }

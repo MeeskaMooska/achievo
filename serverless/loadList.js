@@ -1,4 +1,3 @@
-// Retrieve User's Lists function Version - 0.0.1
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
@@ -14,7 +13,7 @@ exports.handler = async (event) => {
         };
     }
 
-    const { userId } = body;
+    const { listId } = body;
 
     try {
         const userLists = await prisma.achievoUser.findUnique({
@@ -25,15 +24,11 @@ exports.handler = async (event) => {
                 lists: true
             }
         })
-
-        return {
-            statusCode: 200,
-            body: JSON.stringify(userLists.lists)
-        };
     } catch (error) {
+        console.error(error)
         return {
             statusCode: 500,
-            body: JSON.stringify({ error })
+            body: JSON.stringify({ error: 'Server Error.', error }),
         };
     }
-};
+}

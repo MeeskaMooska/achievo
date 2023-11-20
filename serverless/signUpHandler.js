@@ -1,3 +1,4 @@
+// Sign up handler function Version - 0.0.1
 /*
 things this function needs to do:
 
@@ -95,11 +96,21 @@ exports.handler = async (event) => {
 	// ---User doesn't exist---
 	// Checks password strength
 	// Password must be at least 8 characters long, contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character
-	const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*-_])[A-Za-z\d!@#$%^&*-_]{8,}$/;
+	const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*-_])[A-Za-z\d!@#$%^&*-_]{8,32}$/;
 	if (!passwordRegex.test(password)) {
 		return {
 			statusCode: 422,
 			body: JSON.stringify({ error: 'Password Error: not strong.' }),
+		};
+	}
+
+	// Checks username validity
+	// Username cannot be over 16 chars long, cannot contain special characters, and cannot contain spaces
+	const usernameRegex = /^[a-zA-Z0-9_]{1,16}$/;
+	if (!usernameRegex.test(username)) {
+		return {
+			statusCode: 422,
+			body: JSON.stringify({ error: 'Username Error: not valid.' }),
 		};
 	}
 
