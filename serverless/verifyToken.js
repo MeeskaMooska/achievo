@@ -1,3 +1,4 @@
+// Token Verfication function Version - 0.0.1
 const jwt = require('jsonwebtoken');
 const cookie = require('cookie');
 const jwtSecret = process.env.JWT_SECRET;
@@ -35,7 +36,7 @@ exports.handler = async (event) => {
         
         return {
             statusCode: 200,
-            body: JSON.stringify({ message: 'Token verified.', username: decoded.username }),
+            body: JSON.stringify({ message: 'Token verified.', username: decoded.username, email: decoded.email, id: decoded.id}),
         };
     } catch (err) {
 		console.error(err);
