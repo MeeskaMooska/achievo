@@ -2,56 +2,67 @@
 
 import styles from './page.module.css'
 import { useState } from 'react'
+import { ProfileAccessContainer, SignInForm, LoadingContainer } from './components'
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
 
 export default function App() {
-    const [account_identifier, setAccountIdentifier] = useState('');
+    const router = useRouter()
+
+    // Sign up states
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+
+    // Sign in states
+    const [accountIdentifier, setAccountIdentifier] = useState('');
+
+    // Global state
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleAccountIdentifierChange = (event) => {
         setAccountIdentifier(event.target.value);
-    };
+    }
 
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
     }
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    const handleUsernameChange = (event) => {
+        setUsername(event.target.value);
+    }
 
+    const handleEmailChange = (event) => {
+        setEmail(event.target.value);
+    }
+
+    async function handleSignInSubmit(e) {
+        setIsLoading(true)
+        e.preventDefault();
         const user = {
-            account_identifier: account_identifier,
+            account_identifier: accountIdentifier,
             password: password,
         };
-
-        try {
-            const response = await fetch ('.netlify/functions/signInHandler', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(user)
-            });
-    
-            const data = await response.json();
-    
-            console.log(data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+        console.log(user)
+        await axios.post('/.netlify/functions/signInHandler', user)
+            .then(response => {
+                console.log(response.data);
+                router.push('../dashboard')
+            })
+            .catch(error => {
+                console.error(error.error);
+            })
+    }
 
     return (
-        <div className='centered' id={styles.wideDiv}>
-            <form className={styles.wideForm} onSubmit={handleSubmit}>
-                <label htmlFor="account_identifier_input">Email or Username:</label>
-                <input className={styles.input} type="text" placeholder='Email or Username'
-                    onChange={handleAccountIdentifierChange} name="account_identifier_input" id="account_identifier_input" required></input>
-                <label htmlFor="password_input">Password:</label>
-                <input className={styles.input} type="password" placeholder='Password' 
-                    onChange={handlePasswordChange} name="password_input" id="password_input" required></input>
-                <input type="submit" style={{width: '100%', padding: 10, boxSizing: 'content-box'}}></input>
-            </form>
-            <a href="/sign-up">Already have an account? Sign Up.</a>
+        isLoading ? <div className={styles.container}><LoadingContainer /></div> :
+        <div className={styles.container}>
+            <ProfileAccessContainer>
+                <SignInForm handleIdentifier={handleAccountIdentifierChange}
+                    handlePassword={handlePasswordChange}
+                    handleSubmit={handleSignInSubmit} />
+                <a href="../forgot">Forgot email or password?</a>
+            </ProfileAccessContainer>
         </div>
-    )
+    );
 }

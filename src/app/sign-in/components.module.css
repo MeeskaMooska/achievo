@@ -1,0 +1,220 @@
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.profileAccessContainer {
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: left;
+    box-shadow: 0px 0px 8px 0px grey;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.profileAccessContainer a {
+    margin: 0;
+    padding: 0 0 12px 12px;
+    color: grey;
+    margin-top: 6px;
+    transition: .3s;
+    text-align: left;
+}
+
+.profileAccessContainer a:hover {
+    color: black;
+}
+
+.tabSelectorContainer {
+    width: 100%;
+    display: flex;
+    gap: 0;
+}
+
+.tabSelector {
+    width: 50%;
+    padding: 18px;
+    border: none;
+    border-bottom: 1px solid grey;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgb(240, 240, 240);
+}
+
+.tabSelector.active {
+    background: white;
+    border-bottom: 1px solid lightgrey;
+    box-shadow: 0px 0px 4px 0px grey;
+}
+
+.profileAccessForm {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0px 12px;
+    box-sizing: border-box;
+}
+
+.profileAccessForm button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 4px;
+    border: none;
+    background: rgb(240, 240, 240);
+    font-size: 14px;
+    margin-top: 32px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.profileAccessForm button:hover {
+    background: rgb(220, 220, 220);
+}
+
+.profileAccessInputContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+    margin-top: 32px;
+}
+
+.profileAccessInput {
+    width: 100%;
+    padding: 12px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+    border: none;
+    background: rgb(240, 240, 240);
+    transition: .3s;
+    outline: transparent solid 2px;
+    resize: none;
+    white-space: nowrap;
+    font-family: 'Roboto', sans-serif;
+}
+
+.profileAccessInput:focus {
+    outline: rgb(0, 129, 242) solid 2px;
+    background: white;
+}
+
+.profileAccessPasswordContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.passwordHideButton {
+    background: rgb(240, 240, 240);
+    width: 40px;
+    text-align: center;
+    border-radius: 0 4px 4px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background .3s;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.passwordHideButton:hover {
+    background: rgb(220, 220, 220);
+}
+
+.passwordHideButton p {
+    margin: 0;
+}
+
+.passwordInput {
+    border-radius: 4px 0 0 4px;
+    border-right: 1px solid grey;
+}
+
+.profileAccessInputLabel {
+    font-size: 14px;
+    position: absolute;
+    top: 12px;
+    left: 8px;
+    color: grey;
+    cursor: text;
+    transition: .3s;
+    padding: 0px 4px;
+    border-radius: 2px;
+}
+
+.profileAccessInputLabel.active {
+    top: -12px;
+    left: 6px;
+    font-size: 12px;
+    color: grey;
+    background: white;
+}
+
+.loadingScreenContainer {
+    width: 320px;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.loadingScreenContainer h3 {
+    font-weight: 100;
+    margin: 0;
+}
+
+.loadingScreenContainer p {
+    font-weight: 100;
+}
+
+.loadingBarContainer {
+    width: 80%;
+    height: 6px;
+    background: rgb(240, 240, 240);
+    position: relative;
+    overflow: hidden;
+}
+
+.loadingBar {
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, rgb(240, 240, 240), rgb(0, 129, 242) 50%, rgb(240, 240, 240));
+    animation: loadingBar 1.5s infinite linear;
+    position: absolute;
+}
+
+@keyframes loadingBar {
+    0% {
+        left: -50%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+.inputTipBox {
+    text-align: left;
+    color: grey;
+    font-size: 12px;
+    max-height: 0px;
+    overflow: hidden;
+}
+
+.inputTipBox.active {
+    max-height: 100%;
+}
+
+.inputTipBox p {
+    margin: 0;
+}

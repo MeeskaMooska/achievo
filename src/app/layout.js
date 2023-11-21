@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
           <Header />
           {children}
         </div>
-        <footer>Achievo</footer>
+        <footer>Achievo footer (not a priority at all.)</footer>
       </body>
     </html>
   )

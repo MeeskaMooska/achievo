@@ -24,7 +24,7 @@
 /* Title styling */
 .headerTitle {
   font-size: 28px;
-  font-weight: bold;
+  font-weight: 100;
   margin-left: 50%;
   transform: translateX(-50%);
 }
