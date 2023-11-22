@@ -27,15 +27,19 @@
     0% {
         transform: translateX(0px);
     }
+
     25% {
         transform: translateX(-4px);
     }
+
     50% {
         transform: translateX(4px);
     }
+
     75% {
         transform: translateX(-4px);
     }
+
     100% {
         transform: translateX(0px);
     }
@@ -159,9 +163,17 @@
     margin: 0;
 }
 
+.passwordHideButton::selection {
+    background: transparent;
+}
+
+.passwordHideButton::-moz-selection {
+    background: transparent;
+}
+
 .passwordInput {
     border-radius: 4px 0 0 4px;
-    border-right: 1px solid grey;
+    border-right: 1px solid black;
 }
 
 .profileAccessInputLabel {
@@ -222,6 +234,7 @@
     0% {
         left: -50%;
     }
+
     100% {
         left: 100%;
     }

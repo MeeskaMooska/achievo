@@ -98,7 +98,6 @@ const PasswordInput = ({ handlePassword }) => {
 
     function handlePasswordHideClick(e) {
         const passwordHideButton = e.target
-        const passwordInput = document.getElementById('signInPassword')
         if (passwordHideButton.innerHTML == 'ABC') {
             passwordHideButton.innerHTML = '•'
             passwordHideButton.style.fontSize = '28px'
@@ -106,7 +105,6 @@ const PasswordInput = ({ handlePassword }) => {
         } else {
             passwordHideButton.innerHTML = 'ABC'
             passwordHideButton.style.fontSize = '10px'
-            passwordInput.style.color = 'black'
             setSecurePassword('text')
         }
     }
