@@ -30,7 +30,7 @@ exports.handler = async (event) => {
         if (!user) {
             return {
                 statusCode: 401,
-                body: JSON.stringify({ error: 'Username or email not found.' }),
+                body: JSON.stringify({ error: 'Incorrect ' + sign_in_method + ' and password combination.'}),
             };
         }
 
@@ -40,7 +40,7 @@ exports.handler = async (event) => {
         if (!passwordMatch) {
             return {
                 statusCode: 401,
-                body: JSON.stringify({ error: 'Incorrect password.' }),
+                body: JSON.stringify({ error: 'Incorrect ' + sign_in_method + ' and password combination.' }),
             };
         }
 

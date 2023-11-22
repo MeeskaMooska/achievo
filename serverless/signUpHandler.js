@@ -100,7 +100,7 @@ exports.handler = async (event) => {
 	if (!passwordRegex.test(password)) {
 		return {
 			statusCode: 422,
-			body: JSON.stringify({ error: 'Password Error: not strong.' }),
+			body: JSON.stringify({ error: 'Password not strong enough.' }),
 		};
 	}
 
@@ -110,7 +110,7 @@ exports.handler = async (event) => {
 	if (!usernameRegex.test(username)) {
 		return {
 			statusCode: 422,
-			body: JSON.stringify({ error: 'Username Error: not valid.' }),
+			body: JSON.stringify({ error: 'Username contains invalid characters.' }),
 		};
 	}
 

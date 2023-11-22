@@ -2,10 +2,10 @@
 
 import styles from './page.module.css'
 import { useState } from 'react'
-import { ProfileAccessContainer, SignInForm, SignUpForm, LoadingContainer } from './components'
+import { ProfileAccessContainer, SignInForm, SignUpForm, LoadingContainer, TabSelectorContainer } from '../accountAccessComponents/components.js'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
-import componentStyle from './components.module.css'
+import componentStyle from '../accountAccessComponents/components.module.css'
 
 export default function App() {
     const router = useRouter()
@@ -59,7 +59,7 @@ export default function App() {
             account_identifier: accountIdentifier,
             password: password,
         };
-        
+
         await axios.post('/.netlify/functions/signInHandler', user)
             .then(response => {
                 console.log(response.data);
@@ -70,7 +70,7 @@ export default function App() {
                 if (error.response) {
                     console.error('Error: ' + error.response.data.error);
                     console.error('Status: ' + error.response.status);
-                    setErrorText(error.response.data.error)
+                    setErrorText('Error: ' + error.response.data.error)
                 } else if (error.request) {
                     console.error('Error recieving response: ' + error.request);
                     setErrorText('Error recieving response: ' + error.request)
@@ -97,7 +97,7 @@ export default function App() {
                 if (error.response) {
                     console.error('Error: ' + error.response.data.error);
                     console.error('Status: ' + error.response.status);
-                    setErrorText(error.response.data.error)
+                    setErrorText('Error: ' + error.response.data.error)
                 } else if (error.request) {
                     console.error('Error recieving response: ' + error.request);
                     setErrorText('Error recieving response: ' + error.request)
@@ -106,22 +106,22 @@ export default function App() {
     }
 
     return (
-        isLoading ? <div className={styles.container}><LoadingContainer /></div> :
-            <div className={styles.container}>
-                <ProfileAccessContainer isSignIn={isSignIn} handleTabSelectorClick={handleTabSelectorClick}>
-                    {isSignIn ?
-                        <SignInForm handleIdentifier={handleAccountIdentifierChange}
-                            handlePassword={handlePasswordChange}
-                            handleSubmit={handleSignInSubmit} />
-
-                        :
-                        <SignUpForm handleUsername={handleUsernameChange}
-                            handleEmail={handleEmailChange}
-                            handlePassword={handlePasswordChange}
-                            handleSubmit={handleSignUpSubmit}/>
-                    }
-                </ProfileAccessContainer>
-                <p style={{color: 'rgb(255, 110, 110)'}}>{errorText}</p>
-            </div>
-    );
+        <div className={styles.container}>
+            <ProfileAccessContainer isSignIn={isSignIn}>
+                <TabSelectorContainer handleTabSelectorClick={handleTabSelectorClick} />
+                {isLoading && <LoadingContainer isSignIn={isSignIn}/>}
+                {isSignIn ?
+                    <SignInForm handleIdentifier={handleAccountIdentifierChange}
+                        handlePassword={handlePasswordChange}
+                        handleSubmit={handleSignInSubmit} />
+                    :
+                    <SignUpForm handleUsername={handleUsernameChange}
+                        handleEmail={handleEmailChange}
+                        handlePassword={handlePasswordChange}
+                        handleSubmit={handleSignUpSubmit} />
+                }
+            </ProfileAccessContainer>
+            <p style={{ color: 'rgb(255, 110, 110)' }}>{errorText}</p>
+        </div>
+    )
 }

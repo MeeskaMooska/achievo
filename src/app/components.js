@@ -1,6 +1,6 @@
 import styles from './components.module.css'
 
-const Button = ({text}) => {
+const Button = ({ text }) => {
     return (
         <button className={styles.button}>{text}</button>
     )
@@ -9,14 +9,24 @@ const Button = ({text}) => {
 const Header = () => {
     return (
         <header className={styles.header}>
-            <h1 className={styles.headerTitle}>Achievo</h1>
-            <div className={styles.headerLinkContainer}>
-              <a href='../dashboard'>Dashboard</a>
-              <a href='../sign-in'>Sign In</a>
-              <a href='../sign-up'>Register</a>
+            <div className={styles.headerLeftBlock}>
+                <a href="../" className={styles.headerTitle}>Achievo</a>
+                <div className={styles.headerLinkContainer}>
+                    <a href="../sign-in" className={styles.headerLink}>Sign In</a>
+                    <a href="../dashboard" className={styles.headerLink}>Dashboard</a>
+                    <a href="../list/new" className={styles.headerLink}>+List</a>
+                </div>
             </div>
-          </header>
+            <div className={styles.userContainer}>
+                <div className={styles.innerUserContainer}>
+                    <div className={styles.userHeadContainer}>
+                        <div className={styles.userHead}></div>
+                    </div>
+                    <div className={styles.userBody}></div>
+                </div>
+            </div>
+        </header>
     )
 }
 
-export {Button, Header};
+export { Button, Header };

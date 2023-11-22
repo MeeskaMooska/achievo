@@ -104,7 +104,8 @@
 }
 
 .profileAccessForm button:hover {
-    background: rgb(220, 220, 220);
+    background: rgb(0, 136, 255);
+    color: white;
 }
 
 .profileAccessInputContainer {
@@ -198,11 +199,11 @@
 
 .loadingScreenContainer {
     width: 320px;
-    height: 500px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    margin-top: 12px;
 }
 
 .loadingScreenContainer h3 {
@@ -240,18 +241,16 @@
     }
 }
 
-.inputTipBox {
-    text-align: left;
-    color: grey;
+.inputTip {
     font-size: 12px;
-    max-height: 0px;
-    overflow: hidden;
+    color: grey;
+    margin-top: -10px;
+    margin-bottom: -10px;
 }
 
-.inputTipBox.active {
-    max-height: 100%;
-}
-
-.inputTipBox p {
-    margin: 0;
+.regexSpan {
+    background: rgb(247, 247, 247);
+    padding: 1px 2px;
+    border-radius: 2px;
+    color: black;
 }

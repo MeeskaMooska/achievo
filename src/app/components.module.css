@@ -1,49 +1,111 @@
-.button {
-  background: white;
-  padding: 20px;
-  border: 2px solid blue;
-  transition: 1s;
-}
-
-.button:hover {
-  background: blue;
-  color: white;
-}
-
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 16px;
-  background-color: #3498db;
-  /* Adjust color as needed */
-  color: #fff;
-  /* Adjust color as needed */
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    box-shadow: 0px 0px 8px 0px grey;
+    
 }
 
-/* Title styling */
 .headerTitle {
-  font-size: 28px;
-  font-weight: 100;
-  margin-left: 50%;
-  transform: translateX(-50%);
+    font-size: 28px;
+    color: black;
+    transition: .3s;
+    text-decoration-color: transparent;
+    -webkit-text-decoration-color: transparent;
+    font-weight: 100;
 }
 
-/* Links on the right side */
+.headerTitle:hover {
+    text-decoration-color: rgb(0, 136, 255);
+    -webkit-text-decoration-color: rgb(0, 136, 255);
+    letter-spacing: 1px;
+}
+
+.headerLeftBlock {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+}
+
 .headerLinkContainer {
-  display: flex;
-  justify-content: flex-end;
+    display: flex;
+    gap: 12px;
 }
 
-.headerLinkContainer a {
-  margin-left: 20px;
-  /* Adjust spacing between links */
-  text-decoration: none;
-  color: #fff;
-  /* Adjust color as needed */
-  cursor: pointer;
+.headerLink {
+    color: black;
+    transition: .3s;
+    text-decoration-color: transparent;
+    -webkit-text-decoration-color: transparent;
 }
 
-.headerLinkContainer a:hover {
-  text-decoration: underline;
+.headerLink:hover {
+    text-decoration-color: rgb(0, 136, 255);
+    -webkit-text-decoration-color: rgb(0, 136, 255);
+    letter-spacing: 1px;
+}
+
+.userContainer {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid lightgrey;
+    box-shadow: 0px 0px 2px 0px grey;
+    position: relative;
+    overflow: hidden;
+    transition: .3s;
+}
+
+.userContainer:hover {
+    box-shadow: 0px 0px 6px 0px grey;
+}
+
+.innerUserContainer {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    overflow: hidden;
+}
+
+.userHeadContainer {
+    background: white;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.userHead {
+    background: grey;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+}
+
+.userBody {
+    background: grey;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
 }
