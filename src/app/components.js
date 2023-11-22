@@ -1,4 +1,7 @@
+'use client'
+
 import styles from './components.module.css'
+import { useRouter } from 'next/navigation'
 
 const Button = ({ text }) => {
     return (
@@ -7,6 +10,8 @@ const Button = ({ text }) => {
 }
 
 const Header = () => {
+    const router = useRouter()
+
     return (
         <header className={styles.header}>
             <div className={styles.headerLeftBlock}>
@@ -17,7 +22,7 @@ const Header = () => {
                     <a href="../list/new" className={styles.headerLink}>+List</a>
                 </div>
             </div>
-            <div className={styles.userContainer}>
+            <div className={styles.userContainer} onClick={() => router.push('../profile')}>
                 <div className={styles.innerUserContainer}>
                     <div className={styles.userHeadContainer}>
                         <div className={styles.userHead}></div>
