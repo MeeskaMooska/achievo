@@ -1,7 +1,7 @@
 {
 	"geolocation": {
 		"data": {
-			"city": "Newport News",
+			"city": "Warrenton",
 			"country": {
 				"code": "US",
 				"name": "United States"
@@ -11,9 +11,9 @@
 				"name": "Virginia"
 			},
 			"timezone": "America/New_York",
-			"latitude": 37.0737,
-			"longitude": -76.4988
+			"latitude": 38.719,
+			"longitude": -77.7416
 		},
-		"timestamp": 1700532514915
+		"timestamp": 1700618806571
 	}
 }

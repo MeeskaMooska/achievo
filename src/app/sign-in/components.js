@@ -33,27 +33,28 @@ function handleInputBlur(e) {
     }
 }
 
-const ProfileAccessContainer = ({ children }) => {
+const ProfileAccessContainer = ({ children, isSignIn, handleTabSelectorClick }) => {
     return (
         <div className={styles.profileAccessContainer}>
-            <TabSelectorContainer />
+            <TabSelectorContainer handleTabSelectorClick={handleTabSelectorClick} />
             {children}
+            {isSignIn ? <a href="../forgot">Forgot email or password?</a> : null}
         </div>
     )
 }
 
-const TabSelectorContainer = () => {
+const TabSelectorContainer = ({ handleTabSelectorClick }) => {
     return (
         <div className={styles.tabSelectorContainer}>
-            <button className={`${styles.tabSelector} ${styles.active}`}>Sign In</button>
-            <button className={styles.tabSelector}>Sign Up</button>
+            <button className={`${styles.tabSelector} ${styles.active}`} id="tab-selector-0" onClick={handleTabSelectorClick}>Sign In</button>
+            <button className={styles.tabSelector} id="tab-selector-1" onClick={handleTabSelectorClick}>Sign Up</button>
         </div>
     )
 }
 
 const SignInForm = ({ handleIdentifier, handlePassword, handleSubmit }) => {
     return (
-        <form className={styles.profileAccessForm}>
+        <form className={styles.profileAccessForm} style={{paddingBottom: '0px'}}>
             <UserIdentifierInput handleIdentifier={handleIdentifier} />
             <PasswordInput handlePassword={handlePassword} />
             <button onClick={(e) => handleSubmit (e)}>Sign In</button>
@@ -61,7 +62,18 @@ const SignInForm = ({ handleIdentifier, handlePassword, handleSubmit }) => {
     )
 }
 
-const UserIdentifierInput = ({ handleIdentifier }) => {
+const SignUpForm = ({ handleUsername, handleEmail, handlePassword, handleSubmit }) => {
+    return (
+        <form className={styles.profileAccessForm}>
+            <UserIdentifierInput handleIdentifier={handleUsername} placeholderLabel="Username" />
+            <UserIdentifierInput handleIdentifier={handleEmail} placeholderLabel="Email" />
+            <PasswordInput handlePassword={handlePassword} />
+            <button onClick={(e) => handleSubmit (e)}>Sign Up</button>
+        </form>
+    )
+}
+
+const UserIdentifierInput = ({ handleIdentifier, placeholderLabel = "Username or Email" }) => {
     function handleKeyPress(e) {
         if (e.key === 'Enter') {
             e.preventDefault()
@@ -74,7 +86,7 @@ const UserIdentifierInput = ({ handleIdentifier }) => {
 
     return (
         <div className={styles.profileAccessInputContainer}>
-            <label htmlFor="userIdentifier" className={styles.profileAccessInputLabel}>Username or Email</label>
+            <label htmlFor="userIdentifier" className={styles.profileAccessInputLabel}>{placeholderLabel}</label>
             <textarea id="userIdentifier" className={styles.profileAccessInput} rows="1" onKeyDown={(e) => handleKeyPress(e)}
                 onFocus={(e) => handleInputFocus(e)} onBlur={(e) => handleInputBlur(e)} onChange={(e) => handleIdentifier(e)}></textarea>
         </div>
@@ -101,9 +113,9 @@ const PasswordInput = ({ handlePassword }) => {
 
     return (
         <div className={styles.profileAccessInputContainer}>
-            <label htmlFor="signInPassword" className={styles.profileAccessInputLabel}>Password</label>
-            <div className={styles.profileAccessPasswordContainer}>
-                <input id="signInPassword" type={securePassword}
+            <label htmlFor="passwordId" className={styles.profileAccessInputLabel}>Password</label>
+            <div className={styles.profileAccessPasswordContainer} >
+                <input id="passwordId" type={securePassword}
                     className={`${styles.profileAccessInput} ${styles.passwordInput}`} 
                     onChange={(e) => handlePassword(e)}
                     onFocus={(e) => handleInputFocus(e)} 
@@ -131,4 +143,4 @@ const LoadingContainer = () => {
 // className={}
 // className={`${styles.} ${styles.}`}
 
-export { ProfileAccessContainer, SignInForm, LoadingContainer }
+export { ProfileAccessContainer, SignInForm, SignUpForm, LoadingContainer, TabSelectorContainer }

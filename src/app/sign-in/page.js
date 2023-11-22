@@ -2,9 +2,10 @@
 
 import styles from './page.module.css'
 import { useState } from 'react'
-import { ProfileAccessContainer, SignInForm, LoadingContainer } from './components'
+import { ProfileAccessContainer, SignInForm, SignUpForm, LoadingContainer } from './components'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
+import componentStyle from './components.module.css'
 
 export default function App() {
     const router = useRouter()
@@ -19,6 +20,8 @@ export default function App() {
     // Global state
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isSignIn, setIsSignIn] = useState(true);
+    const [errorText, setErrorText] = useState('');
 
     const handleAccountIdentifierChange = (event) => {
         setAccountIdentifier(event.target.value);
@@ -36,6 +39,19 @@ export default function App() {
         setEmail(event.target.value);
     }
 
+    const handleTabSelectorClick = (e) => {
+        console.log(e.target.id)
+        if (e.target.id === 'tab-selector-0') {
+            document.getElementById('tab-selector-0').classList.add(componentStyle.active)
+            document.getElementById('tab-selector-1').classList.remove(componentStyle.active)
+            setIsSignIn(true)
+        } else {
+            document.getElementById('tab-selector-1').classList.add(componentStyle.active)
+            document.getElementById('tab-selector-0').classList.remove(componentStyle.active)
+            setIsSignIn(false)
+        }
+    }
+
     async function handleSignInSubmit(e) {
         setIsLoading(true)
         e.preventDefault();
@@ -43,26 +59,69 @@ export default function App() {
             account_identifier: accountIdentifier,
             password: password,
         };
-        console.log(user)
+        
         await axios.post('/.netlify/functions/signInHandler', user)
             .then(response => {
                 console.log(response.data);
                 router.push('../dashboard')
             })
             .catch(error => {
-                console.error(error.error);
+                setIsLoading(false)
+                if (error.response) {
+                    console.error('Error: ' + error.response.data.error);
+                    console.error('Status: ' + error.response.status);
+                    setErrorText(error.response.data.error)
+                } else if (error.request) {
+                    console.error('Error recieving response: ' + error.request);
+                    setErrorText('Error recieving response: ' + error.request)
+                }
+            })
+    }
+
+    async function handleSignUpSubmit(e) {
+        setIsLoading(true)
+        e.preventDefault();
+        const user = {
+            username: username,
+            email: email,
+            password: password,
+        };
+
+        await axios.post('/.netlify/functions/signUpHandler', user)
+            .then(response => {
+                console.log('Response: ' + response);
+                router.push('../dashboard')
+            })
+            .catch(error => {
+                setIsLoading(false)
+                if (error.response) {
+                    console.error('Error: ' + error.response.data.error);
+                    console.error('Status: ' + error.response.status);
+                    setErrorText(error.response.data.error)
+                } else if (error.request) {
+                    console.error('Error recieving response: ' + error.request);
+                    setErrorText('Error recieving response: ' + error.request)
+                }
             })
     }
 
     return (
         isLoading ? <div className={styles.container}><LoadingContainer /></div> :
-        <div className={styles.container}>
-            <ProfileAccessContainer>
-                <SignInForm handleIdentifier={handleAccountIdentifierChange}
-                    handlePassword={handlePasswordChange}
-                    handleSubmit={handleSignInSubmit} />
-                <a href="../forgot">Forgot email or password?</a>
-            </ProfileAccessContainer>
-        </div>
+            <div className={styles.container}>
+                <ProfileAccessContainer isSignIn={isSignIn} handleTabSelectorClick={handleTabSelectorClick}>
+                    {isSignIn ?
+                        <SignInForm handleIdentifier={handleAccountIdentifierChange}
+                            handlePassword={handlePasswordChange}
+                            handleSubmit={handleSignInSubmit} />
+
+                        :
+                        <SignUpForm handleUsername={handleUsernameChange}
+                            handleEmail={handleEmailChange}
+                            handlePassword={handlePasswordChange}
+                            handleSubmit={handleSignUpSubmit}/>
+                    }
+                </ProfileAccessContainer>
+                <p style={{color: 'rgb(255, 110, 110)'}}>{errorText}</p>
+            </div>
     );
 }
