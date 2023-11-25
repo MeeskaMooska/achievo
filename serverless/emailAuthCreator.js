@@ -23,7 +23,7 @@ const emailAuthCreator = async (username, email) => {
     }
 
     // Send email
-    const info = await transporter.sendMail({
+    await transporter.sendMail({
         from: '"Achievo Mailer" <email-services@achievo-timemanager.com>',
         to: email,
         subject: `Achievo email verification for ${username}`,

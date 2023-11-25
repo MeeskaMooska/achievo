@@ -33,7 +33,6 @@ const jwtSecret = process.env.JWT_SECRET;
 const { emailAuthCreator } = require('./emailAuthCreator');
 
 exports.handler = async (event) => {
-
 	// Attempt to parse json body
 	let body;
 	try {

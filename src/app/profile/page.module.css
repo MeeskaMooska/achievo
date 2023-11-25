@@ -4,32 +4,7 @@
     display: flex;
 }
 
-.infoRowContainer {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-}
-
-.infoKeyRow {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.changeValueRow {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.infoValueRow {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.infoContainer {
-    margin: 14px 0px 4px 14px;
+.infoContainer { 
     display: flex;
     align-items: center;
     gap: 10px;
@@ -37,34 +12,31 @@
 
 .infoIdentifier {
     margin: 0;
-    padding: 4px 6px;
 }
 
 .info {
     width: fit-content;
     margin: 0;
-    padding: 4px 6px;
     background: rgb(240, 240, 240);
     border-radius: 4px;
 }
 
-.changeableRow {
+.changeableContainer {
     display: flex;
     flex-direction: row;
-    align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
-.changeableRow button {
-    padding: 4px 6px;
+.changeableContainer button {
     background: rgb(240, 240, 240);
     border-radius: 4px;
     border: none;
     transition: .3s;
     cursor: pointer;
+    transition: .3s;
 }
 
-.changeableRow button:hover {
+.changeableContainer button:hover {
     background: rgb(0, 136, 255);
     color: white;
 }
@@ -92,4 +64,55 @@
 .applyDiscardContainer button:hover {
     background: rgb(0, 136, 255);
     color: white;
+}
+
+.dashboardLink {
+    white-space: nowrap;
+    font-size: 20px;
+    margin: 20px;
+    color: black;
+    text-decoration-color: transparent;
+    -webkit-text-decoration-color: transparent;
+    height: fit-content;
+    position: absolute;
+    transition: .3s;
+}
+
+.dashboardLink:hover {
+    text-decoration-color: rgb(0, 136, 255);
+    -webkit-text-decoration-color: rgb(0, 136, 255);
+}
+
+.optionsLabel {
+    margin-top: 10px;
+}
+
+.profileOption {
+    width: 180px;
+}
+
+.infoColumn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 28px;
+}
+
+.infoChangeInput {
+    width: 180px;
+    padding: 6px 8px;
+    background: rgb(240, 240, 240);
+    border-radius: 4px;
+    border: none;
+    margin-right: 10px;
+}
+
+.infoChangeButton {
+    padding: 6px 8px;
+    background: rgb(240, 240, 240);
+    border-radius: 4px;
+    border: none;
+    transition: .3s;
+    cursor: pointer;
+    transition: .3s;
 }
