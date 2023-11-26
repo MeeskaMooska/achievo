@@ -54,3 +54,10 @@
     color: grey;
     margin-top: 20px;
 }
+
+.resendText {
+    font-size: 13px;
+    color: grey;
+    margin: 0px;
+    margin-bottom: 20px;
+}

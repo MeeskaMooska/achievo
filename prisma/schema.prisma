@@ -81,3 +81,10 @@ model AchievoEmailExtension {
   user_id   Int
   isRevert Boolean @default(false)
 }
+
+model AchievoResetCode {
+  id  Int @id @default(autoincrement())
+  timeStamp DateTime @default(now())
+  code String @unique
+  associatedUserId Int @unique
+}

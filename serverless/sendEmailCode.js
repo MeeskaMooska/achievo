@@ -1,7 +1,11 @@
+const { PrismaClient } = require('@prisma/client');
+const { hashObject } = require('./hashHandler');
+const jwt = require('jsonwebtoken');
+const prisma = new PrismaClient();
+const jwtSecret = process.env.JWT_SECRET
 const nodemailer = require("nodemailer");
 const { env } = require("process");
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+
 
 // Create transporter
 const transporter = nodemailer.createTransport({
@@ -14,36 +18,43 @@ const transporter = nodemailer.createTransport({
     },
 })
 
-const emailAuthCreator = async (username, email) => {
-    // Generate random extension
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-';
-    const length = 32;
-    let extension = '';
-    for (let i = 0; i < length; i++) {
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        extension += characters.charAt(randomIndex);
-    }
-
-    // Send email
-    await transporter.sendMail({
-        from: '"Achievo Mailer" <email-services@achievo-timemanager.com>',
-        to: email,
-        subject: `Achievo email verification for ${username}`,
-        text: `Click the link to verify your email: ${env.SITE_URL}verify/${extension}`,
-        html: `<h1>Verify email: <a href="${env.SITE_URL}verify/${extension}">here</a></h1>`,
-    });
-
-    return extension;
-}
-
-const passwordResetCodeSenderEmail = async (username, email, userId) => {
+// Send email
+const resetCodeSender = async (username, email, userId) => {
     let code
     let generationSuccess = false
+
     // Prevent infinite loop
     let attempts = 0
     const maxAttempts = 8
 
+    // Check if user already has a code
+    // if code is older than 1 minute, delete it and generate a new one
+    try {
+        const userCodeExists = await prisma.achievoResetCode.findFirst({
+            where: {
+                associatedUserId: userId,
+            },
+        })
 
+        if (userCodeExists) {
+            const codeAge = Date.now() - userCodeExists.timeStamp
+
+            if (codeAge > 60000) {
+                await prisma.achievoResetCode.delete({
+                    where: {
+                        id: userCodeExists.id,
+                    },
+                })
+            } else {
+                return null
+            }
+        }
+    } catch (error) {
+        console.error(error)
+        return error
+    }
+
+    // Generate and store unique code
     while (attempts <= maxAttempts) {
         // Get new code
         code = emailCodeCreator()
@@ -59,11 +70,12 @@ const passwordResetCodeSenderEmail = async (username, email, userId) => {
             // Start process over if code exists
             if (!existingCode) {
                 // Hash code before storing
-                
+                hashedCode = await hashObject(code)
 
+                // Store code
                 await prisma.achievoResetCode.create({
                     data: {
-                        code: code,
+                        code: hashedCode,
                         associatedUserId: userId,
                     },
                 })
@@ -75,7 +87,7 @@ const passwordResetCodeSenderEmail = async (username, email, userId) => {
         } catch (error) {
             console.error(error)
         }
-        console.log('Attempt number: ' + attempts)
+
         attempts++
     }
 
@@ -105,6 +117,7 @@ const passwordResetCodeSenderEmail = async (username, email, userId) => {
     }
 }
 
+// Create code
 const emailCodeCreator = () => {
     // Generate random password reset code
     const characters = '0123456789';
@@ -118,4 +131,45 @@ const emailCodeCreator = () => {
     return code
 }
 
-module.exports = { emailAuthCreator, passwordResetCodeSenderEmail };
+exports.handler = async (event) => {
+    let body;
+    try {
+        body = JSON.parse(event.body);
+    } catch (parseError) {
+        console.error('Invalid JSON format: ', parseError);
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ error: 'JSON Error.', parseError }),
+        };
+    }
+
+    const { email } = body
+
+    try {
+        const user = await prisma.achievoUser.findUnique({
+            where: {
+                email: email,
+            },
+        })
+
+        if (user) {
+            await resetCodeSender(user.username, user.email, user.id)
+
+            return {
+                statusCode: 200,
+                body: JSON.stringify({ message: 'Email found.', user: user }),
+            }
+        } else {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({ error: 'Email not found.' }),
+            };
+        }
+    } catch (error) {
+        console.error(error)
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: 'Server error.', error }),
+        };
+    }
+}

@@ -26,7 +26,7 @@ things to change when reusing this function:
 */
 
 const { PrismaClient } = require('@prisma/client');
-const { hashPassword } = require('./passwordHasher');
+const { hashObject } = require('./hashHandler');
 const jwt = require('jsonwebtoken');
 const prisma = new PrismaClient();
 const jwtSecret = process.env.JWT_SECRET;
@@ -114,7 +114,7 @@ exports.handler = async (event) => {
 	}
 
 	try {
-		const hashedPassword = await hashPassword(password);
+		const hashedPassword = await hashObject(password);
 		try {
 			const newUser = await prisma.achievoUser.create({
 				data: {

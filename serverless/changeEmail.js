@@ -4,7 +4,7 @@
 // BUG: Emails both get sent to new email lol.
 
 const { PrismaClient } = require('@prisma/client')
-const { comparePassword } = require('./passwordHasher')
+const { compareHashed } = require('./hashHandler')
 const prisma = new PrismaClient()
 
 exports.handler = async (event) => {
@@ -32,7 +32,7 @@ exports.handler = async (event) => {
         })
 
         // Check if password matches
-        if (!await comparePassword(password, user.password)) {
+        if (!await compareHashed(password, user.password)) {
             return {
                 statusCode: 401,
                 body: JSON.stringify({ error: 'Incorrect password.' }),

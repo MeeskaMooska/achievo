@@ -1,5 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
-const { comparePassword } = require('./passwordHasher');
+const { compareHashed } = require('./hashHandler');
 const jwt = require('jsonwebtoken');
 const prisma = new PrismaClient();
 const jwtSecret = process.env.JWT_SECRET;
@@ -35,7 +35,7 @@ exports.handler = async (event) => {
         }
 
         // Check if password matches
-        const passwordMatch = await comparePassword(password, user.password);
+        const passwordMatch = await compareHashed(password, user.password);
 
         if (!passwordMatch) {
             return {
@@ -62,7 +62,7 @@ exports.handler = async (event) => {
             { expiresIn: '14d' }
         );
 
-        // Check if token exists
+        // If token exists, update it, otherwise create it
         if (existingToken) {
             await prisma.achievoToken.update({
                 where: {
