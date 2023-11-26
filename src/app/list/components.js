@@ -1,15 +1,15 @@
 import styles from './components.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDownload, faFloppyDisk, faPencil, faPlus, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { faDownload, faFloppyDisk, faPencil, faPlus, faTrashCan, faXmark } from '@fortawesome/free-solid-svg-icons'
 
-const ListOptionsContainer = ({ handleSaveClick }) => {
+const ListOptionsContainer = ({ handleSaveClick, handleLoadClick }) => {
     return (
         <div className={styles.listOptionsContainer}>
             <button className={styles.listOptionsBlock} onClick={handleSaveClick}>
                 <FontAwesomeIcon icon={faFloppyDisk} />
                 <p>Save</p>
             </button>
-            <button className={styles.listOptionsBlock}>
+            <button className={styles.listOptionsBlock} onClick={handleLoadClick}>
                 <FontAwesomeIcon icon={faDownload} />
                 <p>Load</p>
             </button>
@@ -51,7 +51,7 @@ const NewListItemBlock = ({ onClick }) => {
     )
 }
 
-const ListItemBlock = ({ id, title = '', onChange, onDeleteClick, onCompleteClick }) => {
+const ListItemBlock = ({ value = '', onChange, onDeleteClick, onCompleteClick }) => {
     const handleEditButtonPressed = (e) => {
         e.target.previousSibling.focus()
     }
@@ -59,11 +59,33 @@ const ListItemBlock = ({ id, title = '', onChange, onDeleteClick, onCompleteClic
     return (
         <div className={`${styles.listItemBlock} ${styles.listBlock}`}>
             <div className={styles.completedToggleButton} onClick={onCompleteClick}></div>
-            <input type="text" defaultValue={title} onChange={onChange}></input>
+            <input type="text" defaultValue={value} onChange={onChange}></input>
             <FontAwesomeIcon icon={faPencil} className={styles.editButton} onClick={handleEditButtonPressed} />
             <FontAwesomeIcon icon={faTrashCan} className={styles.editButton} onClick={onDeleteClick} />
         </div>
     )
 }
 
-export { ListOptionsContainer, ListContainer, ListTitleBlock, NewListItemBlock, ListItemBlock }
+const LoadListModal = ({ lists = [], closeModal, loadList }) => {
+    return (
+        <div className={styles.loadListModalBox} id="loadListModalBox" onClick={closeModal}>
+            <div className={styles.loadListModal}>
+                <div className={styles.loadListModalHeader}>
+                    <h3>Load List</h3>
+                    <FontAwesomeIcon icon={faXmark} className={styles.xmarkButton} id="loadListModalCloseButton" onClick={closeModal} />
+                </div>
+                <div className={styles.listsContainer}>
+                {lists.map(list => {
+                    return (
+                        <div className={styles.loadListModalItem} data-listid={list.id} key={list.id} onClick={loadList}>
+                            <p data-listid={list.id}>{list.title}</p>
+                        </div>
+                    )
+                })}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export { ListOptionsContainer, ListContainer, ListTitleBlock, NewListItemBlock, ListItemBlock, LoadListModal }

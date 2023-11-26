@@ -2,6 +2,7 @@
 
 import styles from './components.module.css'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 const Button = ({ text }) => {
     return (
@@ -15,11 +16,11 @@ const Header = () => {
     return (
         <header className={styles.header}>
             <div className={styles.headerLeftBlock}>
-                <a href="../" className={styles.headerTitle}>Achievo</a>
+                <Link href="../" className={styles.headerTitle}>Achievo</Link>
                 <div className={styles.headerLinkContainer}>
-                    <a href="../sign-in" className={styles.headerLink}>Sign In</a>
-                    <a href="../dashboard" className={styles.headerLink}>Dashboard</a>
-                    <a href="../list/new" className={styles.headerLink}>+List</a>
+                    <Link href="../sign-in" className={styles.headerLink}>Sign In</Link>
+                    <Link href="../dashboard" className={styles.headerLink}>Dashboard</Link>
+                    <Link href="../list/new" className={styles.headerLink}>+List</Link>
                 </div>
             </div>
             <div className={styles.userContainer} onClick={() => router.push('../profile')}>

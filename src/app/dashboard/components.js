@@ -18,15 +18,15 @@ const ListViewer = ({ listsList = [], onCardClick }) => {
     )
 }
 
-const ListPreviewBlock = () => {
+const ListPreviewBlock = ({ details }) => {
     return (
-        <div className={styles.previewContainer}>
-            <div className={styles.previewBlock}>
-                <div className={styles.previewBlockTitle}></div>
-                <div className={styles.previewBlockItemSection}>
-                    <div className={styles.previewBlockTitle}></div>
-                    <div className={styles.previewBlockTitle}></div>
-                    <div className={styles.previewBlockTitle}></div>
+        <div className={styles.previewContainer} data-details={JSON.stringify(details)}>
+            <div className={styles.previewBlock} data-details={JSON.stringify(details)}>
+                <div className={styles.previewBlockTitle} data-details={JSON.stringify(details)}></div>
+                <div className={styles.previewBlockItemSection} data-details={JSON.stringify(details)}>
+                    <div className={styles.previewBlockTitle} data-details={JSON.stringify(details)}></div>
+                    <div className={styles.previewBlockTitle} data-details={JSON.stringify(details)}></div>
+                    <div className={styles.previewBlockTitle} data-details={JSON.stringify(details)}></div>
                 </div>
             </div>
         </div>
@@ -57,8 +57,8 @@ const ListCard = ({ title, desc, list_id, onCardClick }) => {
     }
 
     return (
-        <div className={styles.listCard} data-details={JSON.stringify(details)} onClick={onCardClick}>
-            <ListPreviewBlock />
+        <div className={styles.listCard} data-details={details} onClick={onCardClick}>
+            <ListPreviewBlock details={details} />
             <h3 data-details={JSON.stringify(details)}>{title}</h3>
             <p data-details={JSON.stringify(details)}>{desc}</p>
         </div>

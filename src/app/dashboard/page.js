@@ -11,7 +11,8 @@ let details = {};
 
 function handleCardClick(card) {
     details = JSON.parse(card.target.getAttribute('data-details'));
-
+    console.log(details)
+    
     document.getElementById('listTitle').innerHTML = details.title;
     document.getElementById('listDescription').innerHTML = details.desc;
 

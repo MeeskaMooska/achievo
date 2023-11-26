@@ -1,12 +1,17 @@
 // New list page Version - 0.0.1 (No intentional mobile or tablet support)
 'use client'
 
-import { ListOptionsContainer, ListContainer, ListTitleBlock, NewListItemBlock, ListItemBlock } from '../components';
+import { ListOptionsContainer, ListContainer, ListTitleBlock, NewListItemBlock, ListItemBlock, LoadListModal } from '../components';
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation'
 import styles from '../components.module.css';
 import axios from 'axios';
 
 export default function App() {
+    const router = useRouter()
+    const [lists, setLists] = useState([])
+    const[showLoadListModal, setShowLoadListModal] = useState(false)
+
     // List Options Section - Save, Load, etc.
     function handleSaveClick() {
         console.log(listTitle, items)
@@ -27,7 +32,28 @@ export default function App() {
     }
 
     function handleLoadClick() {
-        console.log('Load clicked')
+        setShowLoadListModal(true)
+    }
+
+    function handleLoadListModalClose(e) {
+        if (e.target.id === "loadListModalBox" || e.target.id === "loadListModalCloseButton") {
+            setShowLoadListModal(false)
+        }
+    }
+
+    async function loadList(e) {
+        const listId = parseInt(e.target.dataset.listid)
+
+        await axios.post('../.netlify/functions/loadList', { listId: listId })
+            .then(response => {
+                const list = response.data.list
+                console.log(list)
+                setListTitle(list.title)
+                setItems(list.items)
+            })
+            .catch(error => {
+                console.error(error)
+            })
     }
 
     // List Section - Title, Items, etc.
@@ -68,6 +94,16 @@ export default function App() {
 
     const [user, setUser] = useState({});
     useEffect(() => {
+        async function getLists(userId) {
+            await axios.post('../.netlify/functions/retrieveUserLists', { userId: userId })
+                .then(response => {
+                    setLists(response.data);
+                })
+                .catch(error => {
+                    console.error(error)
+                })
+        }
+
         function validateUserToken() {
             axios.get('../.netlify/functions/verifyToken', { withCredentials: true })
                 .then((response) => {
@@ -81,12 +117,13 @@ export default function App() {
 
                     setUser(userData)
 
-                    // Initiate a function call to retrieve the user's lists to display on dashboard
+                    getLists(userData.id)
 
                 })
                 .catch((error) => {
                     // Not a valid token - handle the error
                     console.error('Error from server:', error);
+                    router.push('../sign-in')
                 });
         }
 
@@ -95,12 +132,15 @@ export default function App() {
 
     return (
         <div className="list-box">
-            <ListOptionsContainer handleSaveClick={() => handleSaveClick()}/>
+            {showLoadListModal ? <LoadListModal closeModal={(e) => handleLoadListModalClose(e)}
+                lists={lists} loadList={(e) => loadList(e)} /> : null}
+            <ListOptionsContainer handleSaveClick={() => handleSaveClick()} handleLoadClick={() => handleLoadClick()}/>
             <ListContainer>
-                <ListTitleBlock onChange={(e) => handleTitleChange(e)}/>
+                <ListTitleBlock title={listTitle} onChange={(e) => handleTitleChange(e)}/>
                 {items.map(item => {
                     return (
                         <ListItemBlock
+                            value={item.value}
                             key={item.id}
                             onChange={(e) => handleChange(item.id, e.target.value)}
                             onDeleteClick={() => deleteItem(item.id)}

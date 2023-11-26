@@ -14,18 +14,22 @@ exports.handler = async (event) => {
     }
 
     const { listId } = body;
-
     try {
-        const userLists = await prisma.achievoUser.findUnique({
+        const list = await prisma.achievoList.findUnique({
             where: {
-                id: userId
+                id: listId
             },
             include: {
-                lists: true
+                items: true
             }
         })
+        
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ list: list }),
+        };
     } catch (error) {
-        console.error(error)
+        console.error(error);
         return {
             statusCode: 500,
             body: JSON.stringify({ error: 'Server Error.', error }),
