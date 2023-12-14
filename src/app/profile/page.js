@@ -47,9 +47,8 @@ export default function App() {
     }
 
     async function handleEmailChange(e) {
-        console.log('Email change initiated.')
-        let emailUpdated = false;
-        let newEmailSuccess = false;
+        // TODO: Add loading animation
+        let emailChangeStep = 0;
         let data = {
             userId: userInfo.id,
             email: newEmail,
@@ -58,31 +57,13 @@ export default function App() {
 
         await axios.post('../.netlify/functions/changeEmail', data)
             .then(response => {
-                emailUpdated = true;
+                emailChangeStep = 1;
             })
             .catch(error => {
                 console.error(error);
             })
 
-        console.log('Email updated.')
-
-        if (emailUpdated) {
-            data = {
-                email: newEmail,
-                username: userInfo.username
-            }
-
-            await axios.post('../.netlify/functions/newEmailSender', data)
-                .then(response => {
-                    newEmailSuccess = true;
-                })
-                .catch(error => {
-                    console.error(error);
-                })
-        }
-        console.log('Email 1 sent.')
-
-        if (newEmailSuccess) {
+        if (emailChangeStep === 1) {
             data = {
                 userId: userInfo.id,
                 email: userInfo.email,
@@ -91,14 +72,27 @@ export default function App() {
             console.log("here")
             await axios.post('../.netlify/functions/previousEmailSender', data)
                 .then(response => {
-                    console.log('Email change success.');
+                    emailChangeStep = 2;
                 })
                 .catch(error => {
                     console.error(error);
                 })
         }
 
-        console.log('Email change complete.')
+        if (emailChangeStep === 2) {
+            data = {
+                email: newEmail,
+                username: userInfo.username
+            }
+
+            await axios.post('../.netlify/functions/newEmailSender', data)
+                .then(response => {
+                    setuserInfo({username: userInfo.username, email: newEmail});
+                })
+                .catch(error => {
+                    console.error(error);
+                })
+        }
     }
     return (
         <div className={styles.profileBox}>

@@ -27,12 +27,19 @@ exports.handler = async (event) => {
         // Verify token is valid
         const decoded = jwt.verify(userSessionToken, jwtSecret);
 
-		await prisma.achievoToken.findFirst({
+		const storedToken = await prisma.achievoToken.findFirst({
 			where: {
 				associated_user_id: decoded.id,
 				jwt_token: userSessionToken
 			}
 		})
+
+        if (!storedToken) {
+            return {
+                statusCode: 401,
+                body: JSON.stringify({ error: 'Invalid token.' }),
+            };
+        }
         
         return {
             statusCode: 200,

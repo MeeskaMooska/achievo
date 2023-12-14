@@ -1,19 +1,19 @@
 {
 	"geolocation": {
 		"data": {
-			"city": "New York",
+			"city": "Medford",
 			"country": {
 				"code": "US",
 				"name": "United States"
 			},
 			"subdivision": {
-				"code": "NY",
-				"name": "New York"
+				"code": "OR",
+				"name": "Oregon"
 			},
-			"timezone": "America/New_York",
-			"latitude": 40.7123,
-			"longitude": -74.0068
+			"timezone": "America/Los_Angeles",
+			"latitude": 42.2808,
+			"longitude": -122.9047
 		},
-		"timestamp": 1701041475751
+		"timestamp": 1702586414271
 	}
 }

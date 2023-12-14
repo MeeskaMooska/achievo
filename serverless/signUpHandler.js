@@ -1,4 +1,4 @@
-// Sign up handler function Version - 0.0.1
+// Sign up handler function Version - 1.0
 /*
 things this function needs to do:
 
@@ -30,7 +30,7 @@ const { hashObject } = require('./hashHandler');
 const jwt = require('jsonwebtoken');
 const prisma = new PrismaClient();
 const jwtSecret = process.env.JWT_SECRET;
-const { emailAuthCreator } = require('./emailAuthCreator');
+const { emailAuthCreator } = require('./authCreater');
 
 exports.handler = async (event) => {
 	// Attempt to parse json body

@@ -1,3 +1,4 @@
+/** Header code **/
 .header {
     font-family: 'Roboto', sans-serif;
     display: flex;
@@ -19,8 +20,8 @@
 }
 
 .headerTitle:hover {
-    text-decoration-color: rgb(0, 136, 255);
-    -webkit-text-decoration-color: rgb(0, 136, 255);
+    text-decoration-color: var(--accent-color);
+    -webkit-text-decoration-color: var(--accent-color);
     letter-spacing: 1px;
 }
 
@@ -45,8 +46,8 @@
 }
 
 .headerLink:hover {
-    text-decoration-color: rgb(0, 136, 255);
-    -webkit-text-decoration-color: rgb(0, 136, 255);
+    text-decoration-color: var(--accent-color);
+    -webkit-text-decoration-color: var(--accent-color);
     letter-spacing: 1px;
 }
 
@@ -108,4 +109,180 @@
     bottom: -8px;
     left: 50%;
     transform: translateX(-50%);
+}
+
+/** Footer code **/
+.footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px 5%;
+    position: relative;
+    gap: 8%;
+    border-top: 6px solid var(--accent-color);
+}
+
+.footerDivider {
+    width: 1px;
+    min-height: 260px;
+    background: var(--accent-color);
+}
+
+.footerBusinessSection {
+    text-align: center;
+}
+
+.footerTitle {
+    font-size: 2em;
+    font-weight: 100;
+}
+
+.footerSlogan {
+    font-weight: 100;
+}
+
+.footerCredit {
+    font-weight: 100;
+}
+
+.footerCredit a {
+    font-weight: 400;
+    color: black;
+}
+
+.footerLinkSection {
+    display: flex;
+    gap: 80px;
+    height: 260px;
+}
+
+.footerLinkContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.linkSectionTitle {
+    margin: 6px 0;
+}
+
+.linkSectionLink {
+    color: black;
+    font-weight: 100;
+}
+
+.footerContactSection {
+    flex: 1;
+}
+
+.contactTitle {
+    font-weight: 100;
+    margin: 0;
+    margin-bottom: 18px;
+}
+
+.footerContactForm {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.footerInputContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+    transition: .3s;
+    outline: transparent solid 2px;
+    background: rgb(240, 240, 240);
+    border-radius: 4px;
+}
+
+.footerInputContainer:focus-within {
+    outline: rgb(0, 129, 242) solid 2px;
+    border-radius: 4px;
+    background-color: var(--primary-color);
+}
+
+.footerInput {
+    width: 100%;
+    padding: 12px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+    border: none;
+    transition: .3s;
+    outline: none;
+    resize: none;
+    white-space: nowrap;
+    font-family: 'Roboto', sans-serif;
+    background-color: transparent;
+}
+
+.footerInputLabel {
+    font-size: 14px;
+    position: absolute;
+    z-index: 0;
+    top: 12px;
+    left: 8px;
+    color: grey;
+    cursor: text;
+    transition: .3s;
+    padding: 0px 4px;
+    border-radius: 2px;
+}
+
+.footerInputLabel.active {
+    top: -12px;
+    left: 6px;
+    font-size: 12px;
+    color: grey;
+    background: white;
+}
+
+.footerMessageLabel {
+    font-size: 14px;
+    position: absolute;
+    z-index: 0;
+    top: 4px;
+    left: 4px;
+    color: grey;
+    cursor: text;
+    transition: .3s;
+    padding: 0px 4px;
+    border-radius: 2px;
+}
+
+.footerMessageLabel.active {
+    top: -12px;
+    left: 6px;
+    font-size: 12px;
+    color: grey;
+    background: white;
+}
+
+.footerMessage {
+    padding: 4px;
+    resize: none;
+    background: transparent;
+    position: relative;
+    z-index: 10;
+    outline: none;
+    border: none;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.footerSubmit {
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    box-shadow: 0px 0px 2px 0px grey;
+    background: var(--primary-color);
+    transition: .3s;
+}
+
+.footerSubmit:hover {
+    box-shadow: 0px 0px 4px 0px grey;
 }

@@ -1,5 +1,5 @@
 # Achievo - Your Goal Achievement Companion
-Version - 1.0
+Version - 1.0.1
 
 ## Project Overview
 Achievo is a to-do styled web application designed to assist users in achieving their goals. With a focus on efficient task management, Achievo integrates a robust user management system, offering a seamless and intuitive experience for managing personal and professional objectives.

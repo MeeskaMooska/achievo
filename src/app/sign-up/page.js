@@ -40,7 +40,6 @@ export default function App() {
     }
 
     const handleTabSelectorClick = (e) => {
-        console.log(e.target.id)
         if (e.target.id === 'tab-selector-0') {
             document.getElementById('tab-selector-0').classList.add(componentStyle.active)
             document.getElementById('tab-selector-1').classList.remove(componentStyle.active)

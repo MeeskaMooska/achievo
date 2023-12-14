@@ -1,11 +1,9 @@
 import './globals.css'
-import { Inter } from 'next/font/google'
-import { Header } from './components'
+import { Header, Footer } from './components'
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
 config.autoAddCss = false;
 
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Achievo',
@@ -15,12 +13,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <div className="container">
           <Header />
           {children}
         </div>
-        <footer>Achievo footer (not a priority at all.)</footer>
+        <Footer />
       </body>
     </html>
   )

@@ -1,9 +1,10 @@
-// Dashboard page Version: 0.0.1 - Pre-Alpha (No mobile or tablet support yet)
+// Version: 1.0.1
 'use client'
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation'
 import styles from './components.module.css'
 import { ListViewer, LoadingContainer } from './components'
 
@@ -21,6 +22,7 @@ function handleCardClick(card) {
 }
 
 export default function App() {
+    const router = useRouter();
     const [isLoading, setisLoading] = useState(true);
     const [listsList, setlistsList] = useState([]);
 
@@ -44,14 +46,17 @@ export default function App() {
                 .then((response) => {
                     // Valid token - redirect to dashboard or perform actions
                     console.log('Token Authenticated, hello ' + response.data.username);
+                    console.log(response.data.code)
 
                     // Initiate a function call to retrieve the user's lists to display on dashboard
                     getLists(response.data.id)
                 })
                 .catch((error) => {
-                    // Not a valid token - handle the error
-                    console.error('Error from server:', error.response.data.error);
-                });
+                    // Not a valid token - redirect to login page
+                    if (error.response.status === 401) {
+                        router.push('../sign-in')
+                    }
+                })
         }
 
         validateUserToken();
