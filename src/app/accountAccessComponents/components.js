@@ -61,6 +61,7 @@ const SignInForm = ({ handleIdentifier, handlePassword, handleSubmit }) => {
     // Username States
     const [usernameTooLong, setUsernameTooLong] = useState(false)
     const [usernameContainsSpecialChar, setUsernameContainsSpecialChar] = useState(false)
+    const [usernameContainsSpaces, setUsernameContainsSpaces] = useState(false)
 
     // Password States
     const [passwordTooLong, setPasswordTooLong] = useState(false)
@@ -92,15 +93,18 @@ const SignInForm = ({ handleIdentifier, handlePassword, handleSubmit }) => {
 
     function handleUsernameValidity(e) {
         const username = e.target.value;
-        const isValidUsername = /^[a-zA-Z0-9_]{1,16}$/;
 
+        setUsernameContainsSpaces(username.includes(' '))
         setUsernameTooLong(username.length > 16);
-        setUsernameContainsSpecialChar(!isValidUsername);
+        setUsernameContainsSpecialChar(/[!@#$%^&*\-_]/.test(username));
     }
 
     return (
         <form className={styles.profileAccessForm} style={{ paddingBottom: '0px' }}>
-            <UserIdentifierInput handleIdentifier={handleIdentifier} />
+            <UserIdentifierInput handleIdentifier={handleIdentifier} handleUsernameValidity={handleUsernameValidity} />
+            {usernameTooLong ? <p className={styles.inputTip}>Username cannot be more than 16 characters long</p> : null}
+            {usernameContainsSpecialChar ? <p className={styles.inputTip}>Username cannot contain special characters<span className={styles.regexSpan}>!@#$%^&*\</span></p> : null}
+            {usernameContainsSpaces ? <p className={styles.inputTip}>Username cannot contain spaces</p> : null}
             <PasswordInput handlePassword={handlePassword} handlePasswordValidity={handlePasswordValidity} />
             {passwordTooLong ? <p className={styles.inputTip}>Password cannot be more than 32 characters long</p> : null}
             {passwordTooShort ? <p className={styles.inputTip}>Password must be 8 at least characters long</p> : null}
@@ -162,7 +166,7 @@ const SignUpForm = ({ handleUsername, handleEmail, handlePassword, handleSubmit 
             {usernameTooLong ? <p className={styles.inputTip}>Username cannot be more than 16 characters long</p> : null}
             {usernameContainsSpecialChar ? <p className={styles.inputTip}>Username cannot contain special characters<span className={styles.regexSpan}>!@#$%^&*\</span></p> : null}
             {usernameContainsSpaces ? <p className={styles.inputTip}>Username cannot contain spaces</p> : null}
-            <UserIdentifierInput handleIdentifier={handleEmail} placeholderLabel="Email" inputId="email" />
+            <EmailInput handleIdentifier={handleEmail} />
             <PasswordInput handlePassword={handlePassword} handlePasswordValidity={handlePasswordValidity} />
             {passwordTooLong ? <p className={styles.inputTip}>Password cannot be more than 32 characters long</p> : null}
             {passwordTooShort ? <p className={styles.inputTip}>Password must be 8 at least characters long</p> : null}
@@ -196,6 +200,27 @@ const UserIdentifierInput = ({ handleIdentifier, placeholderLabel = "Username or
                     handleIdentifier(e)
                     handleUsernameValidity(e)
                 }}></textarea>
+        </div>
+    )
+}
+
+const EmailInput = ({ handleIdentifier, placeholderLabel = "Email", handleUsernameValidity = console.log }) => {
+    function handleKeyPress(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault()
+        }
+
+        if (e.key === 'Space') {
+            e.preventDefault()
+        }
+    }
+
+    return (
+        <div className={styles.profileAccessInputContainer}>
+            <label htmlFor="email" className={styles.profileAccessInputLabel}>{placeholderLabel}</label>
+            <textarea id="email" className={styles.profileAccessInput} rows="1" onKeyDown={(e) => handleKeyPress(e)}
+                onFocus={(e) => handleInputFocus(e)} onBlur={(e) => handleInputBlur(e)}
+                onChange={(e) => handleIdentifier(e)}></textarea>
         </div>
     )
 }
@@ -246,9 +271,5 @@ const LoadingContainer = ({ isSignIn }) => {
         </div>
     )
 }
-
-// styles.
-// className={}
-// className={`${styles.} ${styles.}`}
 
 export { ProfileAccessContainer, SignInForm, SignUpForm, LoadingContainer, TabSelectorContainer }
