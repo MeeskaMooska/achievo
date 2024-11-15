@@ -1,14 +1,14 @@
-import { boot } from "https://65437779a0c9990008b54abe--edge.netlify.com/bootstrap/index-combined.ts";
+import { boot } from "https://v2-9-0--edge.netlify.com/bootstrap/index-combined.ts";
 
 const functions = {}; const metadata = { functions: {} };
 
 
       try {
-        const { default: func } = await import("file:///Users/tayvenstover/Documents/NEXT%20Apps/achievo/.netlify/edge-functions/next-dev/index.js");
+        const { default: func } = await import("file:///C:/Users/tayve/Documents/Achievo/achievo/.netlify/edge-functions/next-dev/index.js");
 
         if (typeof func === "function") {
           functions["next-dev"] = func;
-          metadata.functions["next-dev"] = {"url":"file:///Users/tayvenstover/Documents/NEXT%20Apps/achievo/.netlify/edge-functions/next-dev/index.js"}
+          metadata.functions["next-dev"] = {"url":"file:///C:/Users/tayve/Documents/Achievo/achievo/.netlify/edge-functions/next-dev/index.js"}
         } else {
           console.log("\u001b[91m◈\u001b[39m \u001b[31mFailed\u001b[39m to load Edge Function \u001b[33mnext-dev\u001b[39m. The file does not seem to have a function as the default export.");
         }

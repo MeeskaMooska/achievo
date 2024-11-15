@@ -1,5 +1,5 @@
 # Achievo - Your Goal Achievement Companion
-Version - 1.0.1
+Version - 0.1.0
 
 ## Project Overview
 Achievo is a to-do styled web application designed to assist users in achieving their goals. With a focus on efficient task management, Achievo integrates a robust user management system, offering a seamless and intuitive experience for managing personal and professional objectives.
@@ -22,7 +22,7 @@ To start using Achievo:
 3. **Manage Your Tasks**: Add, edit, and track your tasks to effectively manage your goals.
 
 ## Contributing
-Contributions are warmly welcomed. If you're interested in enhancing Achievo or adding new features, please feel free to fork the repository, make your changes, and submit a pull request.
+Contributions ar    e warmly welcomed. If you're interested in enhancing Achievo or adding new features, please feel free to fork the repository, make your changes, and submit a pull request.
 
 ## License
 Achievo is MIT licensed. This license grants the users substantial freedom with the software while protecting the original author.

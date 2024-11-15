@@ -1,19 +1,20 @@
 {
 	"geolocation": {
 		"data": {
-			"city": "Medford",
+			"city": "Ashburn",
 			"country": {
 				"code": "US",
 				"name": "United States"
 			},
 			"subdivision": {
-				"code": "OR",
-				"name": "Oregon"
+				"code": "VA",
+				"name": "Virginia"
 			},
-			"timezone": "America/Los_Angeles",
-			"latitude": 42.2808,
-			"longitude": -122.9047
+			"timezone": "America/New_York",
+			"latitude": 39.0469,
+			"longitude": -77.4903,
+			"postalCode": "20149"
 		},
-		"timestamp": 1702592166808
+		"timestamp": 1731691625643
 	}
 }

@@ -3,9 +3,7 @@
 // TODO: Add functionality to remove previous email revert extension from database after six months
 // BUG: Emails both get sent to new email lol.
 
-const { PrismaClient } = require('@prisma/client')
 const { compareHashed } = require('./hashHandler')
-const prisma = new PrismaClient()
 
 exports.handler = async (event) => {
     // Attempt to parse json body
