@@ -3,8 +3,6 @@
 // TODO: Add functionality to remove previous email revert extension from database after six months
 // BUG: Emails both get sent to new email lol.
 
-const { compareHashed } = require('./hashHandler')
-
 exports.handler = async (event) => {
     // Attempt to parse json body
     let body

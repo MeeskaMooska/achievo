@@ -1,5 +1,4 @@
 
-const { compareHashed } = require('./hashHandler');
 
 exports.handler = async (event) => {
     let body;

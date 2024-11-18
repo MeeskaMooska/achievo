@@ -1,4 +1,3 @@
-const { compareHashed, hashObject } = require('./hashHandler');
 const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET;
 
