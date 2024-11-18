@@ -1,7 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-const { compareHashed } = require('./hashHandler');
 const jwt = require('jsonwebtoken');
-const prisma = new PrismaClient();
 const jwtSecret = process.env.JWT_SECRET;
 
 exports.handler = async (event) => {
@@ -18,31 +15,9 @@ exports.handler = async (event) => {
 
     const { account_identifier, password } = body;
 
-    const sign_in_method = account_identifier.includes('@') ? 'email' : 'username';
-
     try {
-        const user = await prisma.achievoUser.findUnique({
-            where: {
-                [sign_in_method]: account_identifier,
-            },
-        });
-
-        if (!user) {
-            return {
-                statusCode: 401,
-                body: JSON.stringify({ error: 'Incorrect ' + sign_in_method + ' and password combination.'}),
-            };
-        }
-
-        // Check if password matches
-        const passwordMatch = await compareHashed(password, user.password);
-
-        if (!passwordMatch) {
-            return {
-                statusCode: 401,
-                body: JSON.stringify({ error: 'Incorrect ' + sign_in_method + ' and password combination.' }),
-            };
-        }
+        // Find user in database
+        response = await axios.post(`${HOSTNAME}/achievo_api/verify_login`, { account_identifier, password });
 
         // check for existing token
         const existingToken = await prisma.achievoToken.findFirst({

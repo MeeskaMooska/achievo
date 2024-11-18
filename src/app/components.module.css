@@ -286,3 +286,8 @@
 .footerSubmit:hover {
     box-shadow: 0px 0px 4px 0px grey;
 }
+
+.block {
+    animation: none; /* All animations are handled via JS */
+    fill: '#0088FF';
+  }

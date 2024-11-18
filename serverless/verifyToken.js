@@ -2,8 +2,8 @@
 const jwt = require('jsonwebtoken');
 const cookie = require('cookie');
 const jwtSecret = process.env.JWT_SECRET;
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const HOSTNAME = process.env.HOSTNAME;
+const axios = require('axios');
 
 // Start of the function
 exports.handler = async (event) => {
@@ -23,27 +23,23 @@ exports.handler = async (event) => {
     // Parse the cookie header to get the value of the HTTP-only cookie
     const userSessionToken = cookie.parse(cookieHeader)['user_session_token'];
 
+    // Verify token validity
+    const decoded = jwt.verify(userSessionToken, jwtSecret);
+
     try {
-        // Verify token is valid
-        const decoded = jwt.verify(userSessionToken, jwtSecret);
+        const response = await axios.post(`${HOSTNAME}/achievo_api/verify_token`, {user_id: decoded.id, access_token: userSessionToken})
+        const is_valid = response.status === 200 ? true : false;
 
-		const storedToken = await prisma.achievoToken.findFirst({
-			where: {
-				associated_user_id: decoded.id,
-				jwt_token: userSessionToken
-			}
-		})
-
-        if (!storedToken) {
+        if (is_valid) {
             return {
-                statusCode: 401,
-                body: JSON.stringify({ error: 'Invalid token.' }),
+                statusCode: 200,
+                body: JSON.stringify({ message: 'Token verified.', username: decoded.username, email: decoded.email, id: decoded.id}),
             };
         }
-        
+
         return {
-            statusCode: 200,
-            body: JSON.stringify({ message: 'Token verified.', username: decoded.username, email: decoded.email, id: decoded.id}),
+            statusCode: 401,
+            body: JSON.stringify({ error: 'Invalid token.' }),
         };
     } catch (err) {
 		console.error(err);

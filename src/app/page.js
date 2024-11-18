@@ -2,6 +2,7 @@
 
 import './globals.css'
 import styles from './page.module.css'
+import { AnimatedBlocks } from './components'
 
 export default function App() {
     const handleGetStarted = async () => {

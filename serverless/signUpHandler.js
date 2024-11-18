@@ -25,12 +25,11 @@ things to change when reusing this function:
 
 */
 
-const { PrismaClient } = require('@prisma/client');
-const { hashObject } = require('./hashHandler');
 const jwt = require('jsonwebtoken');
-const prisma = new PrismaClient();
 const jwtSecret = process.env.JWT_SECRET;
-const { emailAuthCreator } = require('./authCreater');
+const HOSTNAME = process.env.HOSTNAME;
+//const { emailAuthCreator } = require('./authCreater');
+const axios = require('axios');
 
 exports.handler = async (event) => {
 	// Attempt to parse json body
@@ -47,114 +46,65 @@ exports.handler = async (event) => {
 
 	const { username, password, email } = body;
 
-	// ---Checking for user existence---
-	// Returns true if username exists
-	const usernameExists = async (username) => {
-		const user = await prisma.achievoUser.findUnique({
-			where: {
-				username: username,
-			},
-		});
-		return !!user; // Returns true if username exists
-	};
-
-	// Returns true if email exists
-	const emailExists = async (email) => {
-		const user = await prisma.achievoUser.findUnique({
-			where: {
-				email: email,
-			},
-		});
-		return !!user; // Returns true if email exists
-	}
-
 	try {
-		// Duplicate username found
-		if (await usernameExists(username)) {
-			return {
-				statusCode: 409,
-				body: JSON.stringify({ error: 'Username already in use.' }),
-			}
-		}
-
-		// Duplicate email found
-		if (await emailExists(email)) {
-			return {
-				statusCode: 409,
-				body: JSON.stringify({ error: 'Email already in use' }),
-			}
-		}
-	} catch (databaseQueryError) {
-		console.error('Error during database query.', databaseQueryError);
-		return {
-			statusCode: 500,
-			body: JSON.stringify({ databaseQueryError: 'Error during database query.', databaseQueryError }),
-		};
-	}
-
-	// ---User doesn't exist---
-	// Checks password strength
-	// Password must be at least 8 characters long, contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character
-	const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*-_])[A-Za-z\d!@#$%^&*-_]{8,32}$/;
-	if (!passwordRegex.test(password)) {
-		return {
-			statusCode: 422,
-			body: JSON.stringify({ error: 'Password not strong enough.' }),
-		};
-	}
-
-	// Checks username validity
-	// Username cannot be over 16 chars long, cannot contain special characters, and cannot contain spaces
-	const usernameRegex = /^[a-zA-Z0-9_]{1,16}$/;
-	if (!usernameRegex.test(username)) {
-		return {
-			statusCode: 422,
-			body: JSON.stringify({ error: 'Username contains invalid characters.' }),
-		};
-	}
-
-	try {
-		const hashedPassword = await hashObject(password);
 		try {
-			const newUser = await prisma.achievoUser.create({
-				data: {
-					username,
-					password: hashedPassword,
-					email,
-				},
-			});
+			let user_id;
+
+			await axios.post(`${HOSTNAME}/achievo_api/add_user`, {username, password, email})
+				.then(response => {
+					console.log(response.data);
+					user_id = response.data.user_id;
+					console.log("*" * 100);
+				})
+				.catch(error => {
+					if (error.response) {
+						console.error('Error: ' + error.response.data.error);
+						console.error('Status: ' + error.response.status);
+					} else if (error.request) {
+						console.error('Error recieving response: ' + error.request);
+					}
+
+					return {
+						statusCode: 400,
+						body: JSON.stringify({ error: 'Error creating user.', error }),
+					};
+				})
 
 			// Generate JWT token
 			// Default expiration is two weeks
 			const session_token = jwt.sign(
 				{
-					username: newUser.username,
-					email: newUser.email,
-					id: newUser.id,
+					username: username,
+					email: email,
+					id: user_id,
 				},
 				jwtSecret,
 				{ expiresIn: '14d' }
 			);
 
 			// Create token in database
-			try {
-				await prisma.achievoToken.create({
-					data: {
-						associated_user_id: newUser.id,
-						jwt_token: session_token,
-					},
-				});
-			} catch (createTokenError) {
-				console.error(createTokenError)
-				return {
-					statusCode: 500,
-					body: JSON.stringify({ message: 'Error creating token.', error: createTokenError }),
-				};
-			}
+			await axios.post(`${HOSTNAME}/achievo_api/store_token`, {user_id, access_token: session_token})
+				.then(response => {
+					console.log(response.data);
+				})
+				.catch(error => {
+					if (error.response) {
+						console.error('Error: ' + error.response.data.error);
+						console.error('Status: ' + error.response.status);
+					} else if (error.request) {
+						console.error('Error recieving response: ' + error.request);
+					}
+
+					return {
+						statusCode: 400,
+						body: JSON.stringify({ error: 'Error creating user token.', error }),
+					};
+				})
 
 			// Create cookie
 			const user_session_cookie = `user_session_token=${session_token}; HttpOnly; Secure; SameSite=Strict; Path=/;`;
 
+			/*
 			// Send email to user to verify email address
 			try {
 				emailVerificationExtension = await emailAuthCreator(username, email)
@@ -172,7 +122,7 @@ exports.handler = async (event) => {
 					body: JSON.stringify({ message: 'Error sending email verification.', error: emailAuthError }),
 				};
 			}
-
+			*/
 
 			// User account was successfully created
 			return {

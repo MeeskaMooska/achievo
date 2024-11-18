@@ -38,3 +38,4 @@ next-env.d.ts
 .netlify
 
 /front-end-testing
+/html_testing

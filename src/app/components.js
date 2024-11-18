@@ -47,7 +47,7 @@ const Footer = () => {
             inputLabel.style.color = 'black'
         }
     }
-    
+
     function handleInputBlur(e) {
         const inputObject = e.target
         try {
@@ -98,18 +98,18 @@ const Footer = () => {
                     <div className={styles.footerInputContainer}>
                         <label htmlFor="footerName" className={styles.footerInputLabel}>Name:</label>
                         <input className={styles.footerInput} type="text" id="footerName"
-                        onFocus={(e) => handleInputFocus(e)} onBlur={(e) => handleInputBlur(e)}></input>
+                            onFocus={(e) => handleInputFocus(e)} onBlur={(e) => handleInputBlur(e)}></input>
                     </div>
                     <div className={styles.footerInputContainer}>
                         <label htmlFor="footerEmail" className={styles.footerInputLabel}>Email:</label>
                         <input className={styles.footerInput} type="email" id="footerEmail"
-                        onFocus={(e) => handleInputFocus(e)} onBlur={(e) => handleInputBlur(e)}
+                            onFocus={(e) => handleInputFocus(e)} onBlur={(e) => handleInputBlur(e)}
                         ></input>
                     </div>
                     <div className={styles.footerInputContainer}>
                         <label htmlFor="footerName" className={styles.footerMessageLabel}>Message:</label>
                         <textarea id="footerMessage" className={styles.footerMessage} cols={2}
-                        onFocus={(e) => handleInputFocus(e)} onBlur={(e) => handleInputBlur(e)}></textarea>
+                            onFocus={(e) => handleInputFocus(e)} onBlur={(e) => handleInputBlur(e)}></textarea>
                     </div>
                     <input type="submit" value="Send" className={styles.footerSubmit}></input>
                 </form>
