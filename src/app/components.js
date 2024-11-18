@@ -4,30 +4,79 @@ import styles from './components.module.css'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const Header = () => {
     const router = useRouter()
+    const [screenSize, setScreenSize] = useState(null);
+    const [navOpen, setNavOpen] = useState(false);
+    const headerRef = useRef(null);
+
+    useEffect(() => {
+        const updateScreenSize = () => {
+            if (window.innerWidth <= 550) {
+                setScreenSize("small");
+            } else {
+                setScreenSize("large");
+            }
+        };
+
+        updateScreenSize(); // Set on initial render
+        window.addEventListener("resize", updateScreenSize);
+
+        return () => window.removeEventListener("resize", updateScreenSize);
+    }, []);
+
+    useEffect(() => {
+        if (headerRef.current) {
+            if (navOpen) {
+                headerRef.current.classList.add(styles.navOpen);
+                document.body.style.overflow = "hidden";
+            } else {
+                headerRef.current.classList.remove(styles.navOpen);
+                document.body.style.overflow = "";
+            }
+        }
+    }, [navOpen]);
+
+    const navContainer = () => {
+        if (screenSize === "small") {
+            return (
+                <button onClick={() => setNavOpen(!navOpen)} className={styles.mobileMenuButton}>Menu</button>
+            )
+        } else if (screenSize === "large") {
+            return (
+                <nav className={styles.headerNav}>
+                    <Link href="../dashboard" className={styles.navLink}>Dashboard</Link>
+                    <Link href="../list/new" className={styles.navLink}>Pricing</Link>
+                    <Link href="../list/new" className={styles.navLink}>Features</Link>
+                    <Link href="../profile" className={styles.navLink}>Community</Link>
+                    <Link href="../profile" className={styles.navLink}>Support</Link>
+                    <Link href="../sign-in" className={styles.navLink}>Sign In</Link>
+                    <Link href="../sign-up" className={styles.navLink}>Sign Up</Link>
+                </nav>
+            )
+        }
+    }
 
     return (
-        <header className={styles.header}>
-            <div className={styles.headerLeftBlock}>
-                <Link href="../" className={styles.headerTitle}>Achievo</Link>
-                <div className={styles.headerLinkContainer}>
-                    <Link href="../sign-in" className={styles.headerLink}>Sign In</Link>
-                    <Link href="../dashboard" className={styles.headerLink}>Dashboard</Link>
-                    <Link href="../list/new" className={styles.headerLink}>+List</Link>
-                </div>
-            </div>
-            <div className={styles.userContainer} onClick={() => router.push('../profile')}>
-                <div className={styles.innerUserContainer}>
-                    <div className={styles.userHeadContainer}>
-                        <div className={styles.userHead}></div>
-                    </div>
-                    <div className={styles.userBody}></div>
-                </div>
-            </div>
-        </header>
+        <div>
+            <header className={styles.header} ref={headerRef}>
+                <h1>Achievo</h1>
+                {navContainer()}
+            </header>
+            {navOpen && (
+                <nav className={styles.headerNavMobile}>
+                    <Link href="../dashboard" className={styles.mobileNavLink}>Dashboard</Link>
+                    <Link href="../list/new" className={styles.mobileNavLink}>Pricing</Link>
+                    <Link href="../list/new" className={styles.mobileNavLink}>Features</Link>
+                    <Link href="../profile" className={styles.mobileNavLink}>Community</Link>
+                    <Link href="../profile" className={styles.mobileNavLink}>Support</Link>
+                    <Link href="../sign-in" className={styles.mobileNavLink}>Sign In</Link>
+                    <Link href="../sign-up" className={styles.mobileNavLink}>Sign Up</Link>
+                </nav>
+            )}
+        </div>
     )
 }
 

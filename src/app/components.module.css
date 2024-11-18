@@ -1,114 +1,58 @@
 /** Header code **/
 .header {
-    font-family: 'Roboto', sans-serif;
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    box-shadow: 0px 0px 8px 0px grey;
-    z-index: 1;
-}
-
-.headerTitle {
-    font-size: 28px;
-    color: black;
-    transition: .3s;
-    text-decoration-color: transparent;
-    -webkit-text-decoration-color: transparent;
-    font-weight: 100;
-}
-
-.headerTitle:hover {
-    text-decoration-color: var(--accent-color);
-    -webkit-text-decoration-color: var(--accent-color);
-    letter-spacing: 1px;
-}
-
-.headerLeftBlock {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 12px;
-}
-
-.headerLinkContainer {
-    display: flex;
-    gap: 12px;
-}
-
-.headerLink {
-    color: black;
-    transition: .3s;
-    text-decoration-color: transparent;
-    -webkit-text-decoration-color: transparent;
-}
-
-.headerLink:hover {
-    text-decoration-color: var(--accent-color);
-    -webkit-text-decoration-color: var(--accent-color);
-    letter-spacing: 1px;
-}
-
-.userContainer {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 1px solid lightgrey;
-    box-shadow: 0px 0px 2px 0px grey;
+    padding: 20px 5%;
+    gap: 8%;
+    border-bottom: 1px solid rgb(240, 240, 240);
     position: relative;
-    overflow: hidden;
+}
+
+.header h1 {
+    font-size: 2em;
+    font-weight: 100;
+    margin: 0;
+    color: #0088FF;
+}
+
+.header.navOpen {
+    z-index: 11;
+    position: fixed;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.navLink {
+    text-decoration: none;
+    color: black;
+    font-weight: 100;
     transition: .3s;
 }
 
-.userContainer:hover {
-    box-shadow: 0px 0px 6px 0px grey;
+.mobileMenuButton {
+	border: none;
+	padding: 10px 20px;
+	border-radius: 5px;
+	font-size: 1em;
+	cursor: pointer;
+	transition: .3s;
+    background-color: #0088FF;
+	color: white;
 }
 
-.innerUserContainer {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    position: absolute;
-    left: 1px;
-    top: 1px;
-    overflow: hidden;
-}
-
-.userHeadContainer {
-    background: white;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    position: absolute;
-    bottom: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1;
-}
-
-.userHead {
-    background: grey;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-}
-
-.userBody {
-    background: grey;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    position: absolute;
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
+.headerNavMobile {
+    position: fixed; /* Ensures the nav covers the whole screen */
+    top: 0; /* Start from the top of the viewport */
+    left: 0; /* Start from the left of the viewport */
+    width: 100%;
+    height: 100%; 
+    background: linear-gradient(180deg, #ffffff, #ebf3ff);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 /** Footer code **/
@@ -287,6 +231,31 @@
     box-shadow: 0px 0px 4px 0px grey;
 }
 
+@media screen and (max-width: 500px) {
+    .footer {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .footerDivider {
+        display: none;
+    }
+
+    .footerLinkSection {
+        gap: 20px;
+    }
+
+    .footerLinkContainer {
+        gap: 10px;
+    }
+
+    .footerContactSection {
+        width: 100%;
+    }
+
+}
+
+/* Animate blocks code */
 .blockContainer {
     width: 100%;
     height: 100%;
@@ -295,7 +264,8 @@
     box-sizing: border-box;
     padding: 0px;
     margin: 0px;
-    background: linear-gradient(180deg, #ffffff, #cedde0);
+    background: linear-gradient(180deg, #ffffff, #DBE9FD);
+    overflow: hidden;
 }
 
 .block {
@@ -306,4 +276,4 @@
     border-radius: 0.5rem;
     box-sizing: border-box;
     transform-origin: center;
-  }
+}
