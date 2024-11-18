@@ -1,6 +1,4 @@
-// Save list function Version - 0.0.1
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+
 
 exports.handler = async (event) => {
     let body;

@@ -295,7 +295,7 @@
     box-sizing: border-box;
     padding: 0px;
     margin: 0px;
-    background: linear-gradient(180deg, #cedde0, #ffffff);
+    background: linear-gradient(180deg, #ffffff, #cedde0);
 }
 
 .block {

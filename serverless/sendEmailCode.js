@@ -1,7 +1,5 @@
-const { PrismaClient } = require('@prisma/client');
 const { hashObject } = require('./hashHandler');
 const jwt = require('jsonwebtoken');
-const prisma = new PrismaClient();
 const jwtSecret = process.env.JWT_SECRET
 const nodemailer = require("nodemailer");
 const { env } = require("process");

@@ -1,6 +1,5 @@
-const { PrismaClient } = require('@prisma/client');
+
 const { compareHashed } = require('./hashHandler');
-const prisma = new PrismaClient();
 
 exports.handler = async (event) => {
     let body;

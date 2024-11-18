@@ -1,6 +1,4 @@
 const { compareHashed, hashObject } = require('./hashHandler');
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
 const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET;
 
