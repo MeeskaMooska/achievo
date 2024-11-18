@@ -11,12 +11,15 @@ export default function App() {
 
     return (
         <div className={styles.homeHeroContainer}>
+            <AnimatedBlocks />
             <div className={styles.homeHeroOverlay}></div>
             <div className={styles.homeContentContainer}>
                 <h1>Achievo</h1>
-                <p>Ever get lost in large projects?</p>
-                <h2>Your Tasks, Our Priority: Simplify Your Day with Achievo.</h2>
-                <button onClick={handleGetStarted} className={styles.getStartedButton}>Get Started</button>
+                <h2>With Achievo, everything falls into place.</h2>
+                <div className={styles.heroNav}>
+                    <button onClick={handleGetStarted} className={`${styles.tryItButtonHero} ${styles.heroButton}`}>Try It</button>
+                    <button onClick={handleGetStarted} className={`${styles.logInButtonHero} ${styles.heroButton}`}>Log In</button>
+                </div>
             </div>
         </div>
     )

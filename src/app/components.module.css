@@ -287,7 +287,23 @@
     box-shadow: 0px 0px 4px 0px grey;
 }
 
+.blockContainer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+    background: linear-gradient(180deg, #cedde0, #ffffff);
+}
+
 .block {
-    animation: none; /* All animations are handled via JS */
-    fill: '#0088FF';
+    position: absolute;
+    width: 9em;
+    height: 9em;
+    background-color: #0088FF;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    transform-origin: center;
   }

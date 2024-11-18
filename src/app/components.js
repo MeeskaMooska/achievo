@@ -2,7 +2,9 @@
 
 import styles from './components.module.css'
 import { useRouter } from 'next/navigation'
+import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { useState, useEffect } from 'react'
 
 const Header = () => {
     const router = useRouter()
@@ -118,4 +120,55 @@ const Footer = () => {
     )
 }
 
-export { Header, Footer };
+const AnimatedBlocks = () => {
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    const blockVariants = {
+        initial: (i) => ({
+            y: '-100vh',
+            x: `${Math.random() * 100}vw`,
+        }),
+        fall: (i) => ({
+            y: '100vh',
+            transition: {
+                type: 'spring',
+                stiffness: 50,
+                damping: 20,
+                delay: i * 0.1,
+            },
+        }),
+        align: (i) => ({
+            y: `calc(50vh - 1.5rem)`,
+            x: `calc(50vw - ${(blocks.length / 2 - i) * 10}em)`,
+            transition: {
+                type: 'spring',
+                stiffness: 100,
+                damping: 20,
+                delay: 2 + i * 0.1,
+            },
+        }),
+    }
+
+    const blocks = Array.from({ length: 8 }, (_, i) => i)
+
+    return (
+        <div className={styles.blockContainer}>
+            {mounted && blocks.map((_, i) => (
+                <motion.div
+                    key={i}
+                    className={styles.block}
+                    variants={blockVariants}
+                    custom={i}
+                    initial="initial"
+                    animate={["fall", "align"]}
+                />
+            ))}
+        </div>
+    )
+}
+
+export { Header, Footer, AnimatedBlocks };
