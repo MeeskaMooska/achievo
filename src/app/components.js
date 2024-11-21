@@ -8,24 +8,8 @@ import { useState, useEffect, useRef } from 'react'
 
 const Header = () => {
     const router = useRouter()
-    const [screenSize, setScreenSize] = useState(null);
     const [navOpen, setNavOpen] = useState(false);
     const headerRef = useRef(null);
-
-    useEffect(() => {
-        const updateScreenSize = () => {
-            if (window.innerWidth <= 550) {
-                setScreenSize("small");
-            } else {
-                setScreenSize("large");
-            }
-        };
-
-        updateScreenSize(); // Set on initial render
-        window.addEventListener("resize", updateScreenSize);
-
-        return () => window.removeEventListener("resize", updateScreenSize);
-    }, []);
 
     useEffect(() => {
         if (headerRef.current) {
@@ -39,31 +23,22 @@ const Header = () => {
         }
     }, [navOpen]);
 
-    const navContainer = () => {
-        if (screenSize === "small") {
-            return (
-                <button onClick={() => setNavOpen(!navOpen)} className={styles.mobileMenuButton}>Menu</button>
-            )
-        } else if (screenSize === "large") {
-            return (
+    return (
+        <div>
+            <header className={styles.header} ref={headerRef}>
+                <Link href="/" className={styles.headerLogo}>Achievo</Link>
                 <nav className={styles.headerNav}>
                     <Link href="../dashboard" className={styles.navLink}>Dashboard</Link>
                     <Link href="../list/new" className={styles.navLink}>Pricing</Link>
                     <Link href="../list/new" className={styles.navLink}>Features</Link>
                     <Link href="../profile" className={styles.navLink}>Community</Link>
                     <Link href="../profile" className={styles.navLink}>Support</Link>
-                    <Link href="../sign-in" className={styles.navLink}>Sign In</Link>
-                    <Link href="../sign-up" className={styles.navLink}>Sign Up</Link>
                 </nav>
-            )
-        }
-    }
-
-    return (
-        <div>
-            <header className={styles.header} ref={headerRef}>
-                <h1>Achievo</h1>
-                {navContainer()}
+                <div className={styles.profileButtonContainer}>
+                    <Link href="../sign-in" className={styles.navLink}>Sign In</Link>
+                    <Link href="../sign-up" className={`${styles.navLink} ${styles.fullBlueButton}`}>Sign Up</Link>
+                </div>
+                <button onClick={() => setNavOpen(!navOpen)} className={styles.mobileMenuButton}>Menu</button>
             </header>
             {navOpen && (
                 <nav className={styles.headerNavMobile}>
@@ -171,10 +146,28 @@ const Footer = () => {
 
 const AnimatedBlocks = () => {
     const [mounted, setMounted] = useState(false)
+    const [blockSize, setBlockSize] = useState([null, null]);
 
     useEffect(() => {
         setMounted(true)
     }, [])
+
+    useEffect(() => {
+        const updateBlockSize = () => {
+            if (window.innerWidth <= 550) {
+                setBlockSize([3, 6]);
+            } else if (window.innerWidth <= 1000) {
+                setBlockSize([7, 8]);
+            } else {
+                setBlockSize([10, 8]);
+            }
+        };
+
+        updateBlockSize(); // Set on initial render
+        window.addEventListener("resize", updateBlockSize);
+
+        return () => window.removeEventListener("resize", updateBlockSize);
+    }, []);
 
     const blockVariants = {
         initial: (i) => ({
@@ -192,17 +185,17 @@ const AnimatedBlocks = () => {
         }),
         align: (i) => ({
             y: `calc(50vh - 1.5rem)`,
-            x: `calc(50vw - ${(blocks.length / 2 - i) * 10}em)`,
+            x: `calc(50vw - ${(blocks.length / 2 - i) * blockSize[0]}em)`,
             transition: {
                 type: 'spring',
                 stiffness: 100,
                 damping: 20,
-                delay: 2 + i * 0.1,
+                delay: .5 + i * 0.1,
             },
         }),
     }
 
-    const blocks = Array.from({ length: 8 }, (_, i) => i)
+    const blocks = Array.from({ length: blockSize[1] }, (_, i) => i)
 
     return (
         <div className={styles.blockContainer}>

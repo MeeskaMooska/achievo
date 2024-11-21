@@ -7,27 +7,42 @@
     gap: 8%;
     border-bottom: 1px solid rgb(240, 240, 240);
     position: relative;
+    height: 2.5em;
 }
 
-.header h1 {
+.headerLogo {
     font-size: 2em;
     font-weight: 100;
     margin: 0;
     color: #0088FF;
+    text-decoration: none;
+    height: auto;
 }
 
 .header.navOpen {
     z-index: 11;
     position: fixed;
-    width: 100%;
-    box-sizing: border-box;
+    width: calc(95% - 19px); /* Don't even fucking ask me dude. */
+    /* Couldn't use box-size:border-box so I had to do this. */
+}
+
+.headerNav {
+    display: flex;
+    gap: 20px;
+    flex-direction: row;
 }
 
 .navLink {
     text-decoration: none;
     color: black;
-    font-weight: 100;
     transition: .3s;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.navLink:hover {
+    background-color: rgba(0, 136, 255, 0.2);
+    color: #0088FF;
 }
 
 .mobileMenuButton {
@@ -53,6 +68,33 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.profileButtonContainer {
+    display: flex;
+    gap: 1.4em;
+}
+
+.fullBlueButton {
+    background: #0088FF;
+    color: white;
+}
+
+@media screen and (max-width: 500px) {
+    .headerNav {
+        display: none;
+    }
+
+    .profileButtonContainer {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 500px) {
+
+    .mobileMenuButton {
+        display: none;
+    }
 }
 
 /** Footer code **/
@@ -276,4 +318,11 @@
     border-radius: 0.5rem;
     box-sizing: border-box;
     transform-origin: center;
+}
+
+@media screen and (max-width: 500px) {
+    .block {
+        width: 3em;
+        height: 3em;
+    }
 }
